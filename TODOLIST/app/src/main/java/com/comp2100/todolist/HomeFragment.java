@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 
 /**
@@ -68,8 +69,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         //Set year and month
-        TextView YearMonthText = getView().findViewById(R.id.yearmonthText);
+        TextView YearMonthText = view.findViewById(R.id.yearmonthText);
         YearMonthText.setText(getYearMonth());
 
 
@@ -77,36 +79,36 @@ public class HomeFragment extends Fragment {
 //        SimpleDateFormat sdf = new SimpleDateFormat("EEE" , Locale.ENGLISH);
 //        sdf
         //Set Today's top calendar
-        TextView WeekTodayText = getView().findViewById(R.id.WeekTodayText);
-        TextView DateTodayText = getView().findViewById(R.id.DateTodayText);
+        TextView WeekTodayText = view.findViewById(R.id.WeekTodayText);
+        TextView DateTodayText = view.findViewById(R.id.DateTodayText);
         DateTodayText.setText(getDate(0));
         WeekTodayText.setText(getWeek(0));
 
         //Set tomorrow's calendar
-        TextView WeekTmrdayText = getView().findViewById(R.id.WeekTmrText);
-        TextView DateTmrText = getView().findViewById(R.id.DateTmrText);
+        TextView WeekTmrdayText = view.findViewById(R.id.WeekTmrText);
+        TextView DateTmrText = view.findViewById(R.id.DateTmrText);
         DateTmrText.setText(getDate(1));
         WeekTmrdayText.setText(getWeek(1));
 
         //Set yesterday's calendar
-        TextView WeekYesdayText = getView().findViewById(R.id.WeekYesText);
-        TextView DateYesText = getView().findViewById(R.id.DateYesText);
+        TextView WeekYesdayText = view.findViewById(R.id.WeekYesText);
+        TextView DateYesText = view.findViewById(R.id.DateYesText);
         DateYesText.setText(getDate(-1));
         WeekYesdayText.setText(getWeek(-1));
 
         //Set day after tomorrow's calendar
-        TextView WeekDaTdayText = getView().findViewById(R.id.WeekDaTText);
-        TextView DateDaTText = getView().findViewById(R.id.DateDaTText);
+        TextView WeekDaTdayText = view.findViewById(R.id.WeekDaTText);
+        TextView DateDaTText = view.findViewById(R.id.DateDaTText);
         DateDaTText.setText(getDate(2));
         WeekDaTdayText.setText(getWeek(2));
 
         //Set day before yesterday's top calendar
-        TextView WeekDbydayText = getView().findViewById(R.id.WeekDbyText);
-        TextView DateDbyText = getView().findViewById(R.id.DateDbYText);
+        TextView WeekDbydayText = view.findViewById(R.id.WeekDbyText);
+        TextView DateDbyText = view.findViewById(R.id.DateDbYText);
         DateDbyText.setText(getDate(-2));
         WeekDbydayText.setText(getWeek(-2));
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
     private String getDate(Integer from){
         Calendar calendar = Calendar.getInstance();
