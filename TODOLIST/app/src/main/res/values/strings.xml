@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TODOLIST</string>
-    <string name="home">Home</string>
-    <string name="task">Task</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="task">Task</string>
+    <string name="home">Home</string>
 </resources>

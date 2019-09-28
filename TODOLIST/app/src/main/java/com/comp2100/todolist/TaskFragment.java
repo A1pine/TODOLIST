@@ -53,6 +53,15 @@ public class TaskFragment extends Fragment {
         return fragment;
     }
 
+    static Fragment newInstance(String name) {
+
+        Bundle args = new Bundle();
+        args.putString("name", name);
+        TaskFragment fragment = new TaskFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

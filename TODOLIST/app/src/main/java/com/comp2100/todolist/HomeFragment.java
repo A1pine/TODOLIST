@@ -57,6 +57,15 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+    protected static Fragment newInstance(String name) {
+
+        Bundle args = new Bundle();
+        args.putString("name", name);
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,7 +222,6 @@ public class HomeFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
