@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment {
         }
         return week;
     }
-    protected String getYearMonth() {
+    private String getYearMonth() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         String month = "";
