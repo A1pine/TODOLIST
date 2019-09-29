@@ -1,42 +1,314 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.comp2100.todolist.MainActivity">
+        android:background="#ffffff"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
-    <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp"
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_above="@+id/bottomNavigationView"
+            android:layout_height="240dip"
             android:layout_alignParentTop="true"
             android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:layout_weight="1" />
+            android:background="#518AFF"
+            android:backgroundTint="#518AFF"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
+        <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="18dp"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/ic_sidebar" />
+
+        <TextView
+                android:id="@+id/yearmonthText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="106dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="145dp"
+                android:layout_toEndOf="@+id/imageButton"
+                android:gravity="center"
+                android:text="YearMonth"
+                android:textSize="16sp" />
+
+        <LinearLayout
+                android:id="@+id/Today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/DateTodayText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23"
+                    android:textColor="#ffFFFFFF"
+                    android:textSize="72sp" />
+
+            <TextView
+                    android:id="@+id/WeekTodayText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="#ffFFFFFF"
+                    android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/Yesterday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="24dp"
+                android:layout_toStartOf="@+id/Today"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/DateYesText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="22"
+                    android:textColor="#b3FFFFFF"
+                    android:textSize="72sp" />
+
+            <TextView
+                    android:id="@+id/WeekYesText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="#b3FFFFFF"
+                    android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/Tomorrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="24dp"
+                android:layout_toEndOf="@+id/Today"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/DateTmrText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="24"
+                    android:textColor="#b3FFFFFF"
+                    android:textSize="72sp" />
+
+            <TextView
+                    android:id="@+id/WeekTmrText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="#b3FFFFFF"
+                    android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/DaybeforeYesterday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="-72dp"
+                android:layout_marginEnd="24dp"
+                android:layout_toStartOf="@+id/Yesterday"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/DateDbYText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="21"
+                    android:textColor="#4dFFFFFF"
+                    android:textSize="72sp" />
+
+            <TextView
+                    android:id="@+id/WeekDbyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="#4dFFFFFF"
+                    android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/DayafterTomorrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="-72dp"
+                android:layout_toEndOf="@+id/Tomorrow"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/DateDaTText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="21"
+                    android:textColor="#4dFFFFFF"
+                    android:textSize="72sp" />
+
+            <TextView
+                    android:id="@+id/WeekDaTText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="#4dFFFFFF"
+                    android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/BottomTab"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="57dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/cardview_light_background"
-            app:itemBackground="@null"
-            app:itemIconTint="@drawable/bottom_navigation_selector"
-            app:itemTextColor="@drawable/bottom_navigation_selector"
-            app:menu="@menu/navigation" />
+            android:layout_marginBottom="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addtask"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:orientation="vertical">
+
+            <ImageButton
+                    android:id="@+id/HomeButton"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    app:srcCompat="@drawable/ic_homebutton" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:orientation="vertical">
+
+            <ImageButton
+                    android:id="@+id/TaskButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="0dp"
+                    app:srcCompat="@drawable/ic_task" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ImageButton
+            android:id="@+id/AddButton"
+            android:layout_width="68dip"
+            android:layout_height="68dip"
+            android:layout_alignBottom="@+id/BottomTab"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_addbutton"
-            app:backgroundTint="#FFFFCD00"
-            app:borderWidth="0dp"
-            app:elevation="9dp" />
+            android:background="@drawable/shape"
+            android:layout_marginBottom="24dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_addbutton" />
+
+
+
+    <TextView
+        android:id="@+id/timeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <EditText
+        android:id="@+id/name_home_text"
+        android:layout_width="wrap_content"
+        android:layout_height="95dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="310dp"
+        android:layout_marginRight="500dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:ems="15"
+        android:inputType="text"
+        android:radius="100dp"
+        android:shape="rectangle"
+        android:singleLine="true"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/notificationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name_home_text"
+        android:layout_alignBottom="@+id/name_home_text"
+        android:layout_marginLeft="283dp"
+        android:layout_marginBottom="51dp"
+        android:background="#00000000"
+        android:onClick="goYellow"
+        app:srcCompat="@drawable/ic_star" />
+
+    <TextView
+        android:id="@+id/hometoday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="255dp"
+        android:layout_marginLeft="50dp"
+        android:text="Today"
+        android:textColor="#9e9e9e"
+        android:textSize="35sp" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="95dp"
+        android:layout_editor_absoluteX="6dp"
+        android:layout_editor_absoluteY="6dp"
+        android:layout_marginTop="310dp"
+        android:layout_marginRight="305dp"
+        android:radius="100dp"
+        android:ems="15"
+        android:background="@drawable/boarder" />
+
+
 </RelativeLayout>
