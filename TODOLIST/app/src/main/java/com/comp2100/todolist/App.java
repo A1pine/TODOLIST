@@ -8,7 +8,7 @@ import android.os.Build;
 
 import androidx.core.app.NotificationManagerCompat;
 
-class App extends Application {
+public class App extends Application {
     public static final String CHANNEL_1_ID = "channel1";
     public static final String CHANNEL_2_ID = "channel2";
     @Override

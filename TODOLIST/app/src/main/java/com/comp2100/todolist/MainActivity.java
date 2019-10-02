@@ -48,9 +48,12 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
         //set notificationbutton
         ImageButton starButton = findViewById(R.id.notificationButton);
-        starButton.setOnClickListener((e)->{
-            DialogFragment timePicker = new TimePickerFragment();
-            timePicker.show(getSupportFragmentManager(),"Time Picker");
+        starButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View e) {
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(MainActivity.this.getSupportFragmentManager(), "Time Picker");
+            }
         });
 
         NotificationManagerCompat notificationManagerCompat;
