@@ -4,4 +4,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="task">Task</string>
     <string name="home">Home</string>
+    <string name="reserved_title">Title</string>
+    <string name="reserved_description">Description</string>
 </resources>
