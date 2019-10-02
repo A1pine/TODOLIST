@@ -1,45 +1,47 @@
 package com.comp2100.todolist;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
+
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, TaskFragment.OnFragmentInteractionListener , TimePickerDialog.OnTimeSetListener {
+    private BottomNavigationView bottomNavigationView;
+    private ViewPagerAdapter viewPagerAdapter;
+    private ViewPager viewPager;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         //change star button color
         View view;
@@ -67,133 +69,75 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         notificationManagerCompat.notify(1,builder.build());
 
 
+        // define the floating action button at the middle
+        FloatingActionButton Addtask_button = findViewById(R.id.addtask);
+        //set the floating action button's action
+        Addtask_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //set the switchable view
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        viewPager = findViewById(R.id.vp);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+                //default: none of the button at the bottom tab bar selected;
+                if (menuItem != null) {
+                    menuItem.setChecked(false);
+                } else {
+                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                }
+                menuItem = bottomNavigationView.getMenu().getItem(position);
+                //one of the item is selected
+                menuItem.setChecked(true);
+            }
 
-        //Set year and month
-        TextView YearMonthText = findViewById(R.id.yearmonthText);
-        YearMonthText.setText(getYearMonth());
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
+            }
+        });
 
-//        int week = calendar.get(Calendar.DAY_OF_WEEK);
-//        SimpleDateFormat sdf = new SimpleDateFormat("EEE" , Locale.ENGLISH);
-//        sdf
-        //Set Today's top calendar
-        TextView WeekTodayText = findViewById(R.id.WeekTodayText);
-        TextView DateTodayText = findViewById(R.id.DateTodayText);
-        DateTodayText.setText(getDate(0));
-        WeekTodayText.setText(getWeek(0));
-
-        //Set tomorrow's calendar
-        TextView WeekTmrdayText = findViewById(R.id.WeekTmrText);
-        TextView DateTmrText = findViewById(R.id.DateTmrText);
-        DateTmrText.setText(getDate(1));
-        WeekTmrdayText.setText(getWeek(1));
-
-        //Set yesterday's calendar
-        TextView WeekYesdayText = findViewById(R.id.WeekYesText);
-        TextView DateYesText = findViewById(R.id.DateYesText);
-        DateYesText.setText(getDate(-1));
-        WeekYesdayText.setText(getWeek(-1));
-
-        //Set day after tomorrow's calendar
-        TextView WeekDaTdayText = findViewById(R.id.WeekDaTText);
-        TextView DateDaTText = findViewById(R.id.DateDaTText);
-        DateDaTText.setText(getDate(2));
-        WeekDaTdayText.setText(getWeek(2));
-
-        //Set day before yesterday's top calendar
-        TextView WeekDbydayText = findViewById(R.id.WeekDbyText);
-        TextView DateDbyText = findViewById(R.id.DateDbYText);
-        DateDbyText.setText(getDate(-2));
-        WeekDbydayText.setText(getWeek(-2));
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+        List<Fragment> list = new ArrayList<>();
+        //add the two fragment to the bottom tab bar;
+        list.add(HomeFragment.newInstance("Home"));
+        list.add(TaskFragment.newInstance("Task"));
+        viewPagerAdapter.setList(list);
     }
-    protected String getDate(Integer from){
-        Calendar calendar = Calendar.getInstance();
-        int date = calendar.get(Calendar.DATE);
-        return Integer.toString(date + from);
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-    }
-    protected String getWeek(Integer from){
-        Calendar calendar = Calendar.getInstance();
-        String week = "";
-        switch ((calendar.get(Calendar.DAY_OF_WEEK) + from % 7)){
-            case Calendar.MONDAY:
-                week = "Mon.";
-                break;
-            case Calendar.TUESDAY:
-                week = "Tue.";
-                break;
-            case Calendar.WEDNESDAY:
-                week = "Wed.";
-                break;
-            case Calendar.THURSDAY:
-                week = "Thurs.";
-                break;
-            case Calendar.FRIDAY:
-                week = "Fri.";
-                break;
-            case Calendar.SATURDAY:
-                week = "Sat.";
-                break;
-            case Calendar.SUNDAY:
-                week = "Sun.";
-                break;
-                default:
-                    break;
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            //set the two button of the tab bar to fragments
+            menuItem = item;
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    viewPager.setCurrentItem(0);
+                    return true;
+                case R.id.navigation_task:
+                    viewPager.setCurrentItem(1);
+                    return true;
+            }
+            return false;
         }
-        return week;
-    }
-    protected String getYearMonth() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        String month = "";
+    };
 
-        switch (calendar.get(Calendar.MONTH)){
-            case 0 :
-                month = "Jan";
-                break;
-            case 1 :
-                month = "Feb";
-                break;
-            case 2 :
-                month = "Mar";
-                break;
-            case 3 :
-                month = "Apr";
-                break;
-            case 4 :
-                month = "May";
-                break;
-            case 5 :
-                month = "June";
-                break;
-            case 6 :
-                month = "July";
-                break;
-            case 7 :
-                month = "Aug";
-                break;
-            case 8 :
-                month = "Sept";
-                break;
-            case 9 :
-                month = "Oct";
-                break;
-            case 10 :
-                month = "Nov";
-                break;
-            case 11 :
-                month = "Dec";
-                break;
-            default:
-                break;
-        }
-        return month + ", " + year;
-
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
-
     //change the star background color
     public void goYellow(View view){
 
