@@ -2,8 +2,14 @@ package com.comp2100.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -17,11 +23,16 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    private ImageButton addButton;//Create object for AddButton
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         //Set year and month
         TextView YearMonthText = findViewById(R.id.yearmonthText);
@@ -60,6 +71,26 @@ public class MainActivity extends AppCompatActivity {
         TextView DateDbyText = findViewById(R.id.DateDbYText);
         DateDbyText.setText(getDate(-2));
         WeekDbydayText.setText(getWeek(-2));
+
+        addButton=findViewById(R.id.AddButton);// jump to 'NewReminder' page
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1=new Intent(MainActivity.this,NewReminder.class);
+                startActivity(intent1);
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
     }
     protected String getDate(Integer from){
         Calendar calendar = Calendar.getInstance();
