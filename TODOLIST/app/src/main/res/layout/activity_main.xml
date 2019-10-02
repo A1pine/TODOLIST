@@ -302,13 +302,13 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="95dp"
-        android:layout_editor_absoluteX="6dp"
-        android:layout_editor_absoluteY="6dp"
         android:layout_marginTop="310dp"
         android:layout_marginRight="305dp"
         android:radius="100dp"
         android:ems="15"
         android:background="@drawable/boarder" />
+        //android:layout_editor_absoluteX="6dp"
+        //android:layout_editor_absoluteY="6dp"
 
 
 </RelativeLayout>
