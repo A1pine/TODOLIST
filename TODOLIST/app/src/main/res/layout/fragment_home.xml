@@ -197,13 +197,23 @@
 
         </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/base_swipe_list"
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/topbar_layout"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="36dp"
-                android:layout_marginBottom="0dp" />
+                android:layout_marginTop="0dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/base_swipe_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="72dp"
+                    android:layout_marginBottom="0dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false" />
+        </RelativeLayout>
+
     </RelativeLayout>
+
 </FrameLayout>

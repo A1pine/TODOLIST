@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +81,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        //find recycleview
+        RecyclerView rv = view.findViewById(R.id.base_swipe_list);
+        LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
+        Task newTask = new Task();
+        newTask.initializeData();
+        RVAdapter adapter = new RVAdapter(newTask.tasks);
+
+        rv.setLayoutManager(llm);
+        rv.setAdapter(adapter);
         //Set year and month
         TextView YearMonthText = view.findViewById(R.id.yearmonthText);
         YearMonthText.setText(getYearMonth());

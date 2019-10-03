@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/CardView"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="2dp"
+        android:backgroundTint="@android:color/white"
         android:clickable="true"
         app:cardCornerRadius="16dp"
         app:elevation="1dp">
@@ -25,7 +27,7 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/cardtextshape"/>
+                android:background="@drawable/cardtextshape" />
 
         <TextView
                 android:id="@+id/TextTitle"
@@ -36,6 +38,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_toEndOf="@+id/LeftSideColor"
                 android:text="Title"
+                android:textColor="@android:color/black"
                 android:textSize="24sp" />
 
         <TextView
@@ -46,7 +49,8 @@
                 android:layout_marginStart="36dp"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/LeftSideColor"
-                android:text="02/10/2019" />
+                android:text="02/10/2019"
+                android:textColor="@android:color/black" />
 
         <TextView
                 android:id="@+id/PlaceText"
@@ -56,7 +60,8 @@
                 android:layout_marginStart="36dp"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/LeftSideColor"
-                android:text="Place" />
+                android:text="Place"
+                android:textColor="@android:color/black" />
 
         <TextView
                 android:id="@+id/DescriptionText"
@@ -66,6 +71,46 @@
                 android:layout_marginStart="36dp"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/LeftSideColor"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@android:color/black" />
+
+        <TextView
+                android:id="@+id/DayleftText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="29dp"
+                android:layout_marginEnd="72dp"
+                android:text="30"
+                android:textColor="@android:color/black"
+                android:textSize="64sp" />
+
+        <TextView
+                android:id="@+id/Days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DayleftText"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-19dp"
+                android:layout_marginEnd="37dp"
+                android:text="Days"
+                android:textColor="@android:color/black" />
+
+        <com.sackcentury.shinebuttonlib.ShineButton
+                android:id="@+id/bt_star"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                app:btn_color="@android:color/darker_gray"
+                app:btn_fill_color="@color/coloryellow"
+                app:enable_flashing="true"
+                app:shine_size="40dp"
+                app:siShape="@raw/star" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

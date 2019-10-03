@@ -49,14 +49,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         view.setBackgroundResource(R.color.coloryellow);
 
         //set notificationbutton
-        ImageButton starButton = findViewById(R.id.notificationButton);
-        starButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View e) {
-                DialogFragment timePicker = new TimePickerFragment();
-                timePicker.show(MainActivity.this.getSupportFragmentManager(), "Time Picker");
-            }
-        });
+//        ImageButton starButton = findViewById(R.id.notificationButton);
+//        starButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View e) {
+//                DialogFragment timePicker = new TimePickerFragment();
+//                timePicker.show(MainActivity.this.getSupportFragmentManager(), "Time Picker");
+//            }
+//        });
 
         NotificationManagerCompat notificationManagerCompat;
         notificationManagerCompat = NotificationManagerCompat.from(this);
