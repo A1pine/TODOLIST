@@ -1,5 +1,27 @@
 package com.comp2100.todolist;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.media.Image;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -68,14 +90,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         notificationManagerCompat.notify(1,builder.build());
 
-
         // define the floating action button at the middle
-        FloatingActionButton Addtask_button = findViewById(R.id.addtask);
+        FloatingActionButton Addtask_button = findViewById(R.id.addtask);// jump to 'NewReminder' page
         //set the floating action button's action
         Addtask_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Clicked!", Toast.LENGTH_SHORT).show();
+                Intent intent1=new Intent(MainActivity.this,NewReminder.class);
+                startActivity(intent1);
             }
         });
         //set the switchable view
