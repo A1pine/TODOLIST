@@ -24,6 +24,7 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
@@ -60,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     private ViewPager viewPager;
     private MenuItem menuItem;
 
+    TextView editview;
+    CardView cv;
+    NotificationCompat notificationCompat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,25 +75,25 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         view = this.getWindow().getDecorView();
         view.setBackgroundResource(R.color.coloryellow);
 
-        //set notificationbutton
-//        ImageButton starButton = findViewById(R.id.notificationButton);
-//        starButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View e) {
-//                DialogFragment timePicker = new TimePickerFragment();
-//                timePicker.show(MainActivity.this.getSupportFragmentManager(), "Time Picker");
-//            }
-//        });
-
+        //set notification
         NotificationManagerCompat notificationManagerCompat;
         notificationManagerCompat = NotificationManagerCompat.from(this);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,App.CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(R.drawable. ic_priority_high_black_24dp)
                 .setContentTitle("this is notification")
                 .setContentText("ok...")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText("fine..."))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        notificationManagerCompat.notify(1,builder.build());
+        //cardview notification
+        cv.setOnClickListener((e)->{
+            notificationManagerCompat.notify(1,builder.build());
+            DialogFragment timepicker = new TimePickerFragment();
+            timepicker.show(getSupportFragmentManager(),"TimePicker");
+
+        });
+        editview = findViewById(R.id.PlaceText);
+
+
 
         // define the floating action button at the middle
         FloatingActionButton Addtask_button = findViewById(R.id.addtask);// jump to 'NewReminder' page
@@ -175,7 +180,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         calendar.set(Calendar.SECOND,0);
         TextView textView = findViewById(R.id.timeView);
         String string = "Time is" + SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
-        textView.setText(string);
+        editview.setText(string);
+        startalarm(calendar);
+
+
+
     }
     private void startalarm(Calendar calendar){
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
