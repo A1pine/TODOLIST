@@ -13,12 +13,18 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:context="com.comp2100.todolist.MainActivity">
+        <devs.mulham.horizontalcalendar.HorizontalCalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:textColorSelected="#FFFF"/>
 
         <androidx.viewpager.widget.ViewPager
                 android:id="@+id/vp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_alignParentTop="true"
+                android:layout_below="@+id/calendarView"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="48dp"

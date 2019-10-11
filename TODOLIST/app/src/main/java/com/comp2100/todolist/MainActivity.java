@@ -54,6 +54,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -63,8 +69,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, TaskFragment.OnFragmentInteractionListener  {
+
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, TaskFragment.OnFragmentInteractionListener {
     private static final String TAG="PopupWindows (Select date)";
 
     private BottomNavigationView bottomNavigationView;
@@ -81,9 +90,24 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         setContentView(R.layout.activity_main);
 
 
+        /* starts before 1 month from now */
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.DATE, -5);
 
+        /* ends after 1 month from now */
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.DATE, +5);
 
-
+        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(5)
+                .build();
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar date, int position) {
+                //do something
+            }
+        });
 //        mDisplayDate=(TextView) findViewById(R.id.selectDate);
 //        mDisplayDate.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -155,7 +179,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         Addtask_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1=new Intent(MainActivity.this,NewReminder.class);
+                launchRevealAnimation();
+                Intent intent1=new Intent(MainActivity.this,AddTask.class);
                 startActivity(intent1);
             }
         });
@@ -196,6 +221,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         list.add(HomeFragment.newInstance("Home"));
         list.add(TaskFragment.newInstance("Task"));
         viewPagerAdapter.setList(list);
+    }
+    private void launchRevealAnimation(){
+
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -299,6 +327,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         manager.notify(999, builder.build());
 
     }
+
 
 
 }

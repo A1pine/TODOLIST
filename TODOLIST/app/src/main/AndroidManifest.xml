@@ -19,7 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AddTask" />
 
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyCNIMsfqSgckFc36QT_kmQ5HAr0kEX8gMo" />
         <receiver android:name=".AlertReceive" />
     </application>
 
