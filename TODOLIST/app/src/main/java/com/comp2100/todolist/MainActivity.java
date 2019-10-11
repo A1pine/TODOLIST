@@ -3,12 +3,22 @@ package com.comp2100.todolist;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.RemoteInput;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -24,7 +34,6 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
@@ -55,45 +64,90 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, TaskFragment.OnFragmentInteractionListener , TimePickerDialog.OnTimeSetListener {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, TaskFragment.OnFragmentInteractionListener  {
+    private static final String TAG="PopupWindows (Select date)";
+
     private BottomNavigationView bottomNavigationView;
     private ViewPagerAdapter viewPagerAdapter;
     private ViewPager viewPager;
     private MenuItem menuItem;
-
-    TextView editview;
-    CardView cv;
-    NotificationCompat notificationCompat;
+    private TextView mDisplayDate;
+    Dialog myPopupWindows;
+//    private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
+
+//        mDisplayDate=(TextView) findViewById(R.id.selectDate);
+//        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Calendar cal=Calendar.getInstance();
+//                int year=cal.get(Calendar.YEAR);
+//                int month=cal.get(Calendar.MONTH);
+//                int day=cal.get(Calendar.DAY_OF_MONTH);
+//
+//                DatePickerDialog dialog=new DatePickerDialog(MainActivity.this,android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+//                        mDateSetListener,year,month,day);
+//                dialog.getDatePicker().setBackground(new ColorDrawable(Color.TRANSPARENT));
+//                dialog.show();
+//
+//            }
+//        });
+
+
+        //popup windows select date 2
+
+//        mDateSetListener=new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+//                month=month+1;
+//                Log.d(TAG,"onDateSet:mm/dd/yyy"+month+"/" +day + "/" +year);
+//
+//                String date=month+"/"+"/"+year;
+//                mDisplayDate.setText(date);
+//
+//
+//
+//
+//            }
+//        };
+
+        //define pop up windows
+        myPopupWindows = new Dialog(this);
+
         //change star button color
         View view;
         view = this.getWindow().getDecorView();
         view.setBackgroundResource(R.color.coloryellow);
 
-        //set notification
-        NotificationManagerCompat notificationManagerCompat;
-        notificationManagerCompat = NotificationManagerCompat.from(this);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,App.CHANNEL_1_ID)
-                .setSmallIcon(R.drawable. ic_priority_high_black_24dp)
-                .setContentTitle("this is notification")
-                .setContentText("ok...")
-                .setStyle(new NotificationCompat.BigTextStyle().bigText("fine..."))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        //cardview notification
-        cv.setOnClickListener((e)->{
-            notificationManagerCompat.notify(1,builder.build());
-            DialogFragment timepicker = new TimePickerFragment();
-            timepicker.show(getSupportFragmentManager(),"TimePicker");
-
-        });
-        editview = findViewById(R.id.PlaceText);
 
 
+        //set notificationbutton
+//        ImageButton starButton = findViewById(R.id.notificationButton);
+//        starButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View e) {
+//                DialogFragment timePicker = new TimePickerFragment();
+//                timePicker.show(MainActivity.this.getSupportFragmentManager(), "Time Picker");
+//            }
+//        });
+
+//        NotificationManagerCompat notificationManagerCompat;
+//        notificationManagerCompat = NotificationManagerCompat.from(this);
+ //       NotificationCompat.Builder builder = new NotificationCompat.Builder(this,App.CHANNEL_1_ID)
+ //               .setSmallIcon(R.drawable.ic_notification)
+ //               .setContentTitle("this is notification")
+  //              .setContentText("ok...")
+  //              .setStyle(new NotificationCompat.BigTextStyle().bigText("fine..."))
+   //             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+  //      notificationManagerCompat.notify(1,builder.build());
 
         // define the floating action button at the middle
         FloatingActionButton Addtask_button = findViewById(R.id.addtask);// jump to 'NewReminder' page
@@ -172,32 +226,80 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     }
 
     //set notification time
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
-        calendar.set(Calendar.MINUTE,minute);
-        calendar.set(Calendar.SECOND,0);
-        TextView textView = findViewById(R.id.timeView);
-        String string = "Time is" + SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
-        editview.setText(string);
-        startalarm(calendar);
+  //  @Override
+//    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+ //       Calendar calendar = Calendar.getInstance();
+  //      calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+   //     calendar.set(Calendar.MINUTE,minute);
+   //     calendar.set(Calendar.SECOND,0);
+  //      TextView textView = findViewById(R.id.timeView);
+  //      String string = "Time is" + SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
+  //      textView.setText(string);
+ //   }
+ //   private void startalarm(Calendar calendar){
+  //      AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+  //      Intent intent = new Intent(this,AlertReceive.class);
+ //       PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
+  //      alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+ //   }
+ //   private void cancelalarm(Calendar calendar){
+  //      AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+  //      Intent intent = new Intent(this, AlertReceive.class);
+ //       PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
+  //      alarmManager.cancel(pendingIntent);
+  //  }
+
+    //Popup Windows activity
+    public void ShowPopup(View v) {
+        Button buttonCancel;
+        Button buttonsave;
+//when click popup savebuton it wil have notification
+
+        myPopupWindows.setContentView(R.layout.popupwindows);
+        buttonCancel=myPopupWindows.findViewById(R.id.buttonCancel);
+        buttonsave = myPopupWindows.findViewById(R.id.btnfollow);
 
 
+        buttonsave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNotificationChannel();
+
+            }
+        });
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myPopupWindows.dismiss();
+            }
+        });
+
+        myPopupWindows.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myPopupWindows.show();
+    }
+
+
+//set notification channel
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("MyNotification", "MyNotification", NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MyNotification")
+                .setContentTitle("This is my title")
+                .setSmallIcon(R.drawable.ic_one)
+                .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText("Much longer text that cannot fit one line..."))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentText("This is my test");
+        NotificationManagerCompat manager = NotificationManagerCompat.from(this);
+        manager.notify(999, builder.build());
 
     }
-    private void startalarm(Calendar calendar){
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this,AlertReceive.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
-    }
-    private void cancelalarm(Calendar calendar){
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlertReceive.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
-        alarmManager.cancel(pendingIntent);
-    }
+
 
 }
 
