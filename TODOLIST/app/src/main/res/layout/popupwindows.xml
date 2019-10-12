@@ -2,15 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="350dp"
-    android:layout_height="575dp"
+    android:layout_height="500dp"
     android:background="#ffffff"
     android:padding="5dp"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        >
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +27,7 @@
             android:text="Reminder"
             android:textStyle="bold"
             android:textColor="#518AFF"
-            android:layout_gravity="center_horizontal"
+
             android:layout_marginTop="0dp"
             android:textSize="35dp"/>
         <TextView
@@ -31,57 +35,66 @@
             android:layout_height="wrap_content"
             android:text="Canberra,Australia"
             android:textColor="#518AFF"
-            android:layout_gravity="center_horizontal"
+
             android:layout_marginTop="5dp"/>
+
+
     </LinearLayout>
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="30dp">
+        android:padding="30dp"
+        android:orientation="vertical">
 
         <EditText
-            android:id="@+id/titleEid"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="16sp"
-            android:textColor="#FFAD33"
-            android:paddingLeft="10dp"
+            android:drawableLeft="@drawable/ic_assignment"
+            android:hint="Enter Name"
+            android:textColorHint="#737373"
+            android:backgroundTint="#518AFF"
+            android:textColor="#000000"
             android:maxLines="1"
-            android:background="@drawable/bg_title"
-            android:hint="title"
             />
 
         <EditText
-            android:id="@+id/descEid"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:textSize="16sp"
-            android:textColor="#FFAD33"
-            android:hint="Details"
-            android:layout_below="@+id/titleEid"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/bg_title"
-            android:paddingLeft="10dp"
-
-            />
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/ic_assignment"
+        android:hint="Detail"
+        android:textColorHint="#737373"
+        android:backgroundTint="#518AFF"
+        android:textColor="#000000"
+            android:maxLines="1"
+        />
 
 
         <TextView
-            android:id="@+id/selectDate"
+            android:drawableLeft="@drawable/ic_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Data"
-            android:textColor="#FFAD33"
-            android:layout_below="@id/descEid"
+            android:text="   Select Data"
+            android:textColor="#737373"
             android:layout_marginTop="10dp"
-            android:textSize="30sp"
-            android:layout_centerHorizontal="true"
+            android:textSize="17dp"
+            />
 
+        <TextView
+            android:drawableLeft="@drawable/ic_time"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="   Select Time"
+            android:textColor="#737373"
+            android:layout_marginTop="10dp"
+            android:textSize="17dp"
             />
 
 
 
-    </RelativeLayout>
+
+    </LinearLayout>
 
 
     <Button
@@ -89,29 +102,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="2dp"
         android:background="#518AFF"
+        android:textColor="#ffffff"
         android:text="Save"
-        android:textColor="#ffffff" />
+         />
 
     <LinearLayout
         android:layout_marginTop="18dp"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:padding="15dp">
         <Button
             android:id="@+id/buttonDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="Delete">
+            android:layout_weight="1" android:text="Delete"
+            >
         </Button>
         <Button
-            android:id="@+id/buttonCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="CANCEL">
-        </Button>
+        android:id="@+id/buttonCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="CANCEL">
+    </Button>
+
     </LinearLayout>
 
 
