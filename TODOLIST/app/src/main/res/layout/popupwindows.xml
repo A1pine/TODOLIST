@@ -15,6 +15,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         >
+
+       <!--Reminder title-->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,6 +49,8 @@
         android:padding="30dp"
         android:orientation="vertical">
 
+        <!--Enter new minder name-->
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -56,7 +60,9 @@
             android:backgroundTint="#518AFF"
             android:textColor="#000000"
             android:maxLines="1"
+
             />
+        <!--Enter new details of reminder-->
 
         <EditText
         android:layout_width="match_parent"
@@ -69,7 +75,7 @@
             android:maxLines="1"
         />
 
-
+        <!--Select Date-->
         <TextView
             android:drawableLeft="@drawable/ic_date"
             android:layout_width="wrap_content"
@@ -80,6 +86,7 @@
             android:textSize="17dp"
             />
 
+        <!--Select Time-->
         <TextView
             android:drawableLeft="@drawable/ic_time"
 
@@ -96,7 +103,7 @@
 
     </LinearLayout>
 
-
+    <!--Save Button-->
     <Button
         android:id="@+id/btnfollow"
         android:layout_width="wrap_content"
@@ -114,6 +121,8 @@
         android:layout_width="fill_parent"
         android:layout_alignParentBottom="true"
         android:padding="15dp">
+
+        <!--Delete Button-->
         <Button
             android:id="@+id/buttonDelete"
             android:layout_width="wrap_content"
@@ -121,6 +130,7 @@
             android:layout_weight="1" android:text="Delete"
             >
         </Button>
+        <!--Cancel Button-->
         <Button
         android:id="@+id/buttonCancel"
         android:layout_width="wrap_content"
