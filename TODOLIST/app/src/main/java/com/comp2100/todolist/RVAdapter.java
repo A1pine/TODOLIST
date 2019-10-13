@@ -4,6 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
         this.tasks = tasks;
     }
 
-
+    private static View DialogView;
     public  static class TaskViewHolder extends RecyclerView.ViewHolder{
         CardView cv;
         TextView taskTitle;
@@ -48,10 +49,22 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
         }
     }
     private static void showDialogForView(View v) {
+        LayoutInflater li = LayoutInflater.from(v.getContext());
+        if (DialogView != null) {
+            ViewGroup parent = (ViewGroup) DialogView.getParent();
+            if (parent != null)
+                parent.removeView(DialogView);
+        }
+        try {
+            DialogView = li.inflate(R.layout.popupwindows , null);
+        } catch (InflateException e) {
+            /* map is already there, just return view as it is */
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext())
-                .setTitle("自定义View对话框")
+                .setTitle("Edit")
                 .setIcon(R.mipmap.ic_launcher)
-                .setView(R.layout.popupwindows);
+                .setView(DialogView);
+
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

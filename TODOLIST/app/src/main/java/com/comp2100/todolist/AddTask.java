@@ -111,7 +111,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                         now.get(Calendar.HOUR),
                         now.get(Calendar.MINUTE),
                         now.get(Calendar.SECOND),
-                        false
+                        true
                 );
                 tpd.show(getSupportFragmentManager(), "Datepickerdialog");
             }

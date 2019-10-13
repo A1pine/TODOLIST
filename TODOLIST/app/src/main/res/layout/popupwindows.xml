@@ -1,104 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="350dp"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="#ffffff"
         android:orientation="vertical"
         android:padding="5dp">
 
-    <LinearLayout
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="false"
+            android:layout_marginTop="0dp">
 
-        <!--Reminder title-->
-        <ImageView
-                android:layout_width="wrap_content"
+        <EditText
+                android:id="@+id/title"
+                style="@android:style/Widget.AutoCompleteTextView"
+                android:layout_width="200dip"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:src="#ffffff" />
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="0dp"
-                android:text="Reminder"
-                android:textColor="#518AFF"
-
-                android:textSize="35dp"
-                android:textStyle="bold" />
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Canberra,Australia"
-
-                android:textColor="#518AFF" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="30dp">
-
-        <!--Enter new minder name-->
+                android:text="@string/reserved_title"
+                android:textColor="@android:color/darker_gray" />
 
         <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:backgroundTint="#518AFF"
-                android:drawableLeft="@drawable/ic_assignment"
-                android:hint="Enter Name"
-                android:maxLines="1"
-                android:textColor="#000000"
-                android:textColorHint="#737373"
-
-                />
-        <!--Enter new details of reminder-->
-
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:backgroundTint="#518AFF"
-                android:drawableLeft="@drawable/ic_assignment"
-                android:hint="Detail"
-                android:maxLines="1"
-                android:textColor="#000000"
-                android:textColorHint="#737373" />
-
-        <!--Select Date-->
-        <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/description"
+                style="@android:style/Widget.AutoCompleteTextView"
+                android:layout_width="300dip"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_below="@+id/title"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/reserved_description"
+                android:textColor="@android:color/darker_gray" />
+
+
+        <RadioGroup
+                android:id="@+id/rgcolour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/description"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:orientation="horizontal">
+
+            <RadioButton
+                    android:id="@+id/PersonalButton"
+                    android:layout_width="96dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Personal"
+                    android:textColor="#74030202" />
+
+            <RadioButton
+                    android:id="@+id/MeetingButton"
+                    android:layout_width="96dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Meeting"
+                    android:textColor="#74030202" />
+
+            <RadioButton
+                    android:id="@+id/PartyButton"
+                    style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                    android:layout_width="96dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Party"
+                    android:textColor="#74030202" />
+
+        </RadioGroup>
+
+        <RadioGroup
+                android:id="@+id/belowcolour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rgcolour"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:orientation="horizontal">
+
+            <RadioButton
+                    android:id="@+id/WorkButton"
+                    android:layout_width="96dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Work"
+                    android:textColor="#74030202" />
+
+            <RadioButton
+                    android:id="@+id/ShoppingButton"
+                    android:layout_width="96dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Shopping"
+                    android:textColor="#74030202" />
+
+            <RadioButton
+                    android:id="@+id/StudyButton"
+                    android:layout_width="96dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Study"
+                    android:textColor="#74030202" />
+
+        </RadioGroup>
+
+        <TextView
+                android:id="@+id/dateText"
+                android:layout_width="177dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/belowcolour"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
                 android:drawableLeft="@drawable/ic_date"
-                android:text="   Select Data"
-                android:textColor="#737373"
-                android:textSize="17dp" />
+                android:editable="false"
+                android:ems="10"
+                android:forceDarkAllowed="true"
+                android:text="Select Data"
+                android:textColor="#74030202"
+                android:textSize="18sp" />
 
-        <!--Select Time-->
         <TextView
-                android:layout_width="wrap_content"
-
+                android:id="@+id/timeText"
+                android:layout_width="163dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_below="@+id/belowcolour"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
                 android:drawableLeft="@drawable/ic_time"
-                android:text="   Select Time"
-                android:textColor="#737373"
-                android:textSize="17dp" />
+                android:editable="false"
+                android:ems="10"
+                android:forceDarkAllowed="true"
+                android:text="Select Time"
+                android:textColor="#74030202"
+                android:textSize="18sp" />
 
+        <androidx.cardview.widget.CardView
+                android:id="@+id/mapFragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/timeText"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                app:cardCornerRadius="15dp">
 
-    </LinearLayout>
+            <fragment
+                    android:id="@+id/map"
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context=".MainActivity" />
+        </androidx.cardview.widget.CardView>
 
-    <!--Save Button-->
-
-
+    </RelativeLayout>
 </LinearLayout>

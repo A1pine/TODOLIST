@@ -5,16 +5,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        android:clickable="true"
-        android:theme="@android:style/ThemeOverlay.Material.Dark">
+        android:clickable="true">
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="false"
             android:layout_marginTop="0dp"
-            android:background="#FCF7F7"
-            android:theme="@android:style/ThemeOverlay.Material.Dark">
+            android:background="#FCF7F7">
 
         <EditText
                 android:id="@+id/title"
@@ -133,10 +131,10 @@
                 android:editable="false"
                 android:ems="10"
                 android:forceDarkAllowed="true"
-                android:text="Choose a date"
+                android:drawableLeft="@drawable/ic_date"
+                android:text="Select Data"
                 android:textColor="#74030202"
-                android:textSize="24sp"
-                android:theme="@android:style/ThemeOverlay.Material.Dark" />
+                android:textSize="24sp" />
 
         <TextView
                 android:id="@+id/timeText"
@@ -151,10 +149,10 @@
                 android:editable="false"
                 android:ems="10"
                 android:forceDarkAllowed="true"
-                android:text="Choose a time"
+                android:drawableLeft="@drawable/ic_time"
+                android:text="Select Time"
                 android:textColor="#74030202"
-                android:textSize="24sp"
-                android:theme="@android:style/ThemeOverlay.Material.Dark" />
+                android:textSize="24sp" />
 
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
