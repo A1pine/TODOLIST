@@ -90,7 +90,6 @@ public class HomeFragment extends Fragment {
 
         rv.setLayoutManager(llm);
         rv.setAdapter(adapter);
-
         // Inflate the layout for this fragment
         return view;
     }

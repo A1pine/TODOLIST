@@ -284,49 +284,48 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 //when click popup savebuton it wil have notification
 
         myPopupWindows.setContentView(R.layout.popupwindows);
-        buttonCancel=myPopupWindows.findViewById(R.id.buttonCancel);
-        buttonsave = myPopupWindows.findViewById(R.id.btnfollow);
-
-
-        buttonsave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createNotificationChannel();
-
-            }
-        });
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myPopupWindows.dismiss();
-            }
-        });
+//        buttonCancel=myPopupWindows.findViewById(R.id.buttonCancel);
+//        buttonsave = myPopupWindows.findViewById(R.id.btnfollow);
+//
+//
+//        buttonsave.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                createNotificationChannel();
+//            }
+//        });
+//        buttonCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                myPopupWindows.dismiss();
+//            }
+//        });
 
         myPopupWindows.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myPopupWindows.show();
     }
 
 
-//set notification channel
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("MyNotification", "MyNotification", NotificationManager.IMPORTANCE_HIGH);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MyNotification")
-                .setContentTitle("This is my title")
-                .setSmallIcon(R.drawable.ic_one)
-                .setAutoCancel(true)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Much longer text that cannot fit one line..."))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentText("This is my test");
-        NotificationManagerCompat manager = NotificationManagerCompat.from(this);
-        manager.notify(999, builder.build());
-
-    }
+////set notification channel
+//    private void createNotificationChannel() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel channel = new NotificationChannel("MyNotification", "MyNotification", NotificationManager.IMPORTANCE_HIGH);
+//            NotificationManager manager = getSystemService(NotificationManager.class);
+//            manager.createNotificationChannel(channel);
+//        }
+//
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MyNotification")
+//                .setContentTitle("This is my title")
+//                .setSmallIcon(R.drawable.ic_one)
+//                .setAutoCancel(true)
+//                .setStyle(new NotificationCompat.BigTextStyle()
+//                        .bigText("Much longer text that cannot fit one line..."))
+//                .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                .setContentText("This is my test");
+//        NotificationManagerCompat manager = NotificationManagerCompat.from(this);
+//        manager.notify(999, builder.build());
+//
+//    }
 
 
 

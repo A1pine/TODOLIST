@@ -1,145 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="350dp"
-    android:layout_height="500dp"
-    android:background="#ffffff"
-    android:padding="5dp"
-    android:layout_gravity="center"
-    >
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:padding="5dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
 
-       <!--Reminder title-->
+        <!--Reminder title-->
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="#ffffff"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reminder"
-            android:textStyle="bold"
-            android:textColor="#518AFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:src="#ffffff" />
 
-            android:layout_marginTop="0dp"
-            android:textSize="35dp"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Canberra,Australia"
-            android:textColor="#518AFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="Reminder"
+                android:textColor="#518AFF"
 
-            android:layout_marginTop="5dp"/>
+                android:textSize="35dp"
+                android:textStyle="bold" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Canberra,Australia"
+
+                android:textColor="#518AFF" />
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="30dp"
-        android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30dp">
 
         <!--Enter new minder name-->
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:drawableLeft="@drawable/ic_assignment"
-            android:hint="Enter Name"
-            android:textColorHint="#737373"
-            android:backgroundTint="#518AFF"
-            android:textColor="#000000"
-            android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:backgroundTint="#518AFF"
+                android:drawableLeft="@drawable/ic_assignment"
+                android:hint="Enter Name"
+                android:maxLines="1"
+                android:textColor="#000000"
+                android:textColorHint="#737373"
 
-            />
+                />
         <!--Enter new details of reminder-->
 
         <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:drawableLeft="@drawable/ic_assignment"
-        android:hint="Detail"
-        android:textColorHint="#737373"
-        android:backgroundTint="#518AFF"
-        android:textColor="#000000"
-            android:maxLines="1"
-        />
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:backgroundTint="#518AFF"
+                android:drawableLeft="@drawable/ic_assignment"
+                android:hint="Detail"
+                android:maxLines="1"
+                android:textColor="#000000"
+                android:textColorHint="#737373" />
 
         <!--Select Date-->
         <TextView
-            android:drawableLeft="@drawable/ic_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="   Select Data"
-            android:textColor="#737373"
-            android:layout_marginTop="10dp"
-            android:textSize="17dp"
-            />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_date"
+                android:text="   Select Data"
+                android:textColor="#737373"
+                android:textSize="17dp" />
 
         <!--Select Time-->
         <TextView
-            android:drawableLeft="@drawable/ic_time"
+                android:layout_width="wrap_content"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="   Select Time"
-            android:textColor="#737373"
-            android:layout_marginTop="10dp"
-            android:textSize="17dp"
-            />
-
-
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_time"
+                android:text="   Select Time"
+                android:textColor="#737373"
+                android:textSize="17dp" />
 
 
     </LinearLayout>
 
     <!--Save Button-->
-    <Button
-        android:id="@+id/btnfollow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="2dp"
-        android:background="#518AFF"
-        android:textColor="#ffffff"
-        android:text="Save"
-         />
-
-    <LinearLayout
-        android:layout_marginTop="18dp"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:padding="15dp">
-
-        <!--Delete Button-->
-        <Button
-            android:id="@+id/buttonDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="Delete"
-            >
-        </Button>
-        <!--Cancel Button-->
-        <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="CANCEL">
-    </Button>
-
-    </LinearLayout>
 
 
 </LinearLayout>
