@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -75,6 +76,14 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addtask);
+
+        // *** IMPORTANT ***
+        // MapView requires that the Bundle you pass contain ONLY MapView SDK
+        // objects or sub-Bundles.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        // Make the radiobuttons can only be chosen once
         RadioButton PersonalBtn = findViewById(R.id.PersonalButton);
         RadioButton MeetingBtn = findViewById(R.id.MeetingButton);
         RadioButton PartyBtn = findViewById(R.id.PartyButton);
@@ -123,12 +132,13 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         double lng = -73.99;
         LatLng appointLoc = new LatLng(lat, lng);
 
-        // 移动地图到指定经度的位置
+        // Move the map
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(appointLoc));
         googleMap.getUiSettings().setScrollGesturesEnabled(false);
         googleMap.getUiSettings().setMapToolbarEnabled(true);
-        //添加标记到指定经纬度
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Marker")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+        googleMap.getUiSettings().setZoomGesturesEnabled(false);
+//        googleMap.setOnMapClickListener();
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Marker"));
+//                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
     }
 }
