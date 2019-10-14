@@ -4,7 +4,6 @@
     package="com.comp2100.todolist">
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,6 +26,7 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyCNIMsfqSgckFc36QT_kmQ5HAr0kEX8gMo" />
         <receiver android:name=".AlertReceive" />
+
     </application>
 
 </manifest>

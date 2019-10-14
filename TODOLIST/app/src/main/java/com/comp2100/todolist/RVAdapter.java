@@ -4,6 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.os.Handler;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +20,15 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Time;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
-    List<Task> tasks;
+    HashMap<Date,Task> tasks;
 
-    RVAdapter(List<Task> tasks){
+    RVAdapter(HashMap<Date, Task> tasks){
         this.tasks = tasks;
     }
 

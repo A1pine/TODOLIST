@@ -1,8 +1,11 @@
 package com.comp2100.todolist;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,8 +40,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Observable;
 
 public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
     String strBtnSelected = "unInit";
@@ -48,9 +55,13 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     Location mLastLocation;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
+    Location currtlocation;
+    String SelectDate;
+    String SelectTime;
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+        SelectDate = date;
         TextView dateText = findViewById(R.id.dateText);
         dateText.setText(date);
 
@@ -59,6 +70,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         String pickedTime = hourOfDay + ":" + minute;
+        SelectTime = pickedTime;
         TextView timeText = findViewById(R.id.timeText);
         timeText.setText(pickedTime);
     }
@@ -154,6 +166,33 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                 tpd.show(getSupportFragmentManager(), "Datepickerdialog");
             }
         });
+
+        Button SaveButton = findViewById(R.id.SaveButton);
+        SaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //@TODO if user hasn't fill all the field.
+                TextView TitleText = findViewById(R.id.title);
+                TextView DespText = findViewById(R.id.description);
+                RadioGroup grp1 = findViewById(R.id.rgcolour);
+                RadioGroup grp2 = findViewById(R.id.belowcolour);
+                RadioButton CheckedButton = findViewById(grp1.getCheckedRadioButtonId() == -1?grp2.getCheckedRadioButtonId() : grp1.getCheckedRadioButtonId());
+                String StreetName = "";
+                if(currtlocation != null)
+                    StreetName = getLocation(currtlocation);
+                String Title  = "" + TitleText.getText();
+                String Description = "" + DespText.getText();
+                //@TODO: enum Task Type
+                Task createTask = new Task();
+                createTask.Title = Title;
+                createTask.Description = Description;
+                createTask.location = StreetName;
+                Date date = new Date(System.currentTimeMillis());
+                HomeFragment.tasks.tasks.put(date , createTask);
+                AddTask.this.finish();
+                //                HomeFragment.newInstance();
+            }
+        });
     }
     @Override
     public void onPause() {
@@ -170,8 +209,8 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(0); // two minute interval
-        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setInterval(500); // two minute interval
+        mLocationRequest.setFastestInterval(500);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -198,6 +237,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             if (locationList.size() > 0) {
                 //The last location in the list is the newest
                 Location location = locationList.get(locationList.size() - 1);
+                currtlocation = location;
                 Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
                 mLastLocation = location;
                 if (mCurrLocationMarker != null) {
@@ -214,6 +254,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                 mGoogleMap.getUiSettings().setZoomGesturesEnabled(false);
                 //move map camera
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+//                getLocation(location.getLatitude() , location.getLongitude());
             }
         }
     };
@@ -285,5 +326,27 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+    public String getLocation(Location curlocation) {
+        Double lat = curlocation.getLatitude();
+        Double lng = curlocation.getLongitude();
+        Geocoder geocoder = new Geocoder(AddTask.this, Locale.getDefault());
+
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+            String add = obj.getAddressLine(0);
+
+
+            return add;
+
+
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return "Address is not Available";
     }
 }

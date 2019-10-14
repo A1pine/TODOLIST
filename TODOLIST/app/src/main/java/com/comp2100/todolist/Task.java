@@ -7,7 +7,8 @@ class Task {
     String date;
     String Title;
     String location;
-    public List<Task> tasks;
+    String Description;
+
     Task(){}
     Task(String title , String date , String location){
         this.Title = title;
@@ -16,11 +17,5 @@ class Task {
     }
 
 
-    // This method creates an ArrayList that has three task objects
-    public void initializeData(){
-        tasks = new ArrayList<>();
-        tasks.add(new Task("Task1" , "02/10/2019" , "home"));
-        tasks.add(new Task("Task2" , "03/10/2019" , "school"));
-        tasks.add(new Task("Task3" , "03/10/2019" , "outside"));
-    }
+
 }

@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.Time;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -34,7 +36,7 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    static Tasks tasks = new Tasks();
     private OnFragmentInteractionListener mListener;
 
     public HomeFragment() {
@@ -84,9 +86,11 @@ public class HomeFragment extends Fragment {
         //find recycleview
         RecyclerView rv = view.findViewById(R.id.base_swipe_list);
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
-        Task newTask = new Task();
-        newTask.initializeData();
-        RVAdapter adapter = new RVAdapter(newTask.tasks);
+//        newTask.initializeData();
+        //@TODO : AddtaskButton
+
+//        newTask.tasks.add(new Task("Task1" , "02/10/2019" , "home"));
+        RVAdapter adapter = new RVAdapter(tasks.tasks);
 
         rv.setLayoutManager(llm);
         rv.setAdapter(adapter);
