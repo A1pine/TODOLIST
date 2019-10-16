@@ -1,20 +1,19 @@
 package com.comp2100.todolist;
 
+import android.location.Location;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 class Task {
-    String date;
+    Date date;
     String Title;
-    String location;
+    String StreetName;
     String Description;
+    Location location;
+    TaskClass classification;
 
-    Task(){}
-    Task(String title , String date , String location){
-        this.Title = title;
-        this.date = date;
-        this.location = location;
-    }
 
 
 

@@ -22,6 +22,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.room.Room;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -56,12 +57,22 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
     Location currtlocation;
-    String SelectDate;
+    Integer SelectMonth;
+    Integer SelectYear;
+    Integer SelectDay;
+    Integer SelectHour;
+    Integer SelectMinute;
     String SelectTime;
+
+    public DatabaseHelper databaseHelper;
+    public TodoDao todoDao;
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
-        SelectDate = date;
+        SelectMonth = dayOfMonth;
+        SelectYear = year;
+        SelectDay = dayOfMonth;
         TextView dateText = findViewById(R.id.dateText);
         dateText.setText(date);
 
@@ -70,7 +81,8 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         String pickedTime = hourOfDay + ":" + minute;
-        SelectTime = pickedTime;
+        SelectHour = hourOfDay;
+        SelectMinute = minute;
         TextView timeText = findViewById(R.id.timeText);
         timeText.setText(pickedTime);
     }
@@ -168,6 +180,8 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         });
 
         Button SaveButton = findViewById(R.id.SaveButton);
+        databaseHelper = Room.databaseBuilder(getApplicationContext(), DatabaseHelper.class, "todo-db").allowMainThreadQueries().build();
+        todoDao = databaseHelper.todoDao();
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,11 +200,37 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                 Task createTask = new Task();
                 createTask.Title = Title;
                 createTask.Description = Description;
-                createTask.location = StreetName;
+                createTask.location = currtlocation;
+                createTask.StreetName = StreetName;
+                createTask.classification = TaskClass.valueOf(CheckedButton.getText().toString());
+
                 Date date = new Date(System.currentTimeMillis());
-                HomeFragment.tasks.tasks.put(date , createTask);
+//                HomeFragment.tasks.tasks.put(date , createTask);
+                //@TODO if not activited
+                TaskDB newTask = new TaskDB();
+                if(findViewById(R.id.NotifySwitch).isActivated())
+                {
+                    newTask.setNotify(true);
+                    newTask.setHour(SelectHour);
+                    newTask.setMinute(SelectMinute);
+                    newTask.setMonth(SelectMonth);
+                    newTask.setDay(SelectDay);
+                    newTask.setYear(SelectYear);
+                }
+                else newTask.setNotify(false);
+                newTask.setCreateDate(date);
+                newTask.setTitle(Title);
+                newTask.setDescription(Description);
+
+                newTask.setLatitude(currtlocation.getLatitude());
+                newTask.setLongitude(currtlocation.getLongitude());
+                newTask.setIsdone(false);
+                todoDao.insert(newTask);
+
                 AddTask.this.finish();
                 //                HomeFragment.newInstance();
+
+
             }
         });
     }

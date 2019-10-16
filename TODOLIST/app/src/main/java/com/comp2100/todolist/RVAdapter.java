@@ -26,9 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
-    HashMap<Date,Task> tasks;
+    List<TaskDB> tasks;
+    RVAdapter(){
 
-    RVAdapter(HashMap<Date, Task> tasks){
+    }
+    RVAdapter(List<TaskDB> tasks){
         this.tasks = tasks;
     }
 
@@ -91,9 +93,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int i) {
-        taskViewHolder.taskTitle.setText(tasks.get(i).Title);
-        taskViewHolder.tasklocation.setText(tasks.get(i).location);
-        taskViewHolder.taskdate.setText(tasks.get(i).date);
+//        taskViewHolder.taskTitle.setText(tasks.get(i).Title);
+//        taskViewHolder.tasklocation.setText(tasks.get(i).location);
+//        taskViewHolder.taskdate.setText(tasks.get(i).date);
     }
     //set notification channel
     private static void createNotificationChannel(View v) {

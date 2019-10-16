@@ -1,12 +1,14 @@
 package com.comp2100.todolist;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,7 @@ public class HomeFragment extends Fragment {
     private String mParam2;
     static Tasks tasks = new Tasks();
     private OnFragmentInteractionListener mListener;
+    private DatabaseHelper databaseHelper;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -83,6 +86,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        databaseHelper = Room.databaseBuilder(getActivity().getApplicationContext(), DatabaseHelper.class, "todo-db").fallbackToDestructiveMigration().build();
         //find recycleview
         RecyclerView rv = view.findViewById(R.id.base_swipe_list);
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
@@ -90,8 +95,9 @@ public class HomeFragment extends Fragment {
         //@TODO : AddtaskButton
 
 //        newTask.tasks.add(new Task("Task1" , "02/10/2019" , "home"));
-        RVAdapter adapter = new RVAdapter(tasks.tasks);
 
+
+        RVAdapter adapter = new RVAdapter();
         rv.setLayoutManager(llm);
         rv.setAdapter(adapter);
         // Inflate the layout for this fragment
@@ -103,7 +109,6 @@ public class HomeFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -134,4 +139,5 @@ public class HomeFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

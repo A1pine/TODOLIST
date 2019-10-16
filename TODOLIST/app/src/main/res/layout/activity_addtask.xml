@@ -14,6 +14,16 @@
             android:layout_marginTop="0dp"
             android:background="#FCF7F7">
 
+        <Switch
+                android:id="@+id/NotifySwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/belowcolour"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="Switch" />
+
         <EditText
                 android:id="@+id/title"
                 style="@android:style/Widget.AutoCompleteTextView"
@@ -122,7 +132,7 @@
                 android:id="@+id/dateText"
                 android:layout_width="177dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/belowcolour"
+                android:layout_below="@+id/NotifySwitch"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
@@ -140,7 +150,7 @@
                 android:id="@+id/timeText"
                 android:layout_width="163dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/belowcolour"
+                android:layout_below="@+id/NotifySwitch"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="216dp"
                 android:layout_marginTop="24dp"
