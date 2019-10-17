@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.model.Place;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -132,6 +133,8 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addtask);
 
+        //Register Subsriber
+        onResume();
         // *** IMPORTANT ***
         // MapView requires that the Bundle you pass contain ONLY MapView SDK
         // objects or sub-Bundles.
@@ -319,6 +322,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                 markerOptions.title("Current Position");
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
                 mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
                 mGoogleMap.getUiSettings().setZoomGesturesEnabled(false);
                 //move map camera
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -419,5 +423,28 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return "Address is not Available";
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Place place){
+        mGoogleMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()));
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14));
+        Toast toast=Toast.makeText(getApplicationContext(), "Sent" ,  Toast.LENGTH_LONG);
+//        currtlocation = place.getLatLng()
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
