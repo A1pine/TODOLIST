@@ -21,16 +21,17 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
-    List<TaskDB> tasks;
+    ArrayList<TaskDB> tasks = new ArrayList<>();
     RVAdapter(){
 
     }
-    RVAdapter(List<TaskDB> tasks){
+    RVAdapter(ArrayList<TaskDB> tasks){
         this.tasks = tasks;
     }
 
@@ -66,7 +67,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
         } catch (InflateException e) {
             /* map is already there, just return view as it is */
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext())
+        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext() , R.style.Theme_MaterialComponents_Light_Dialog_Alert)
                 .setTitle("Edit")
                 .setIcon(R.mipmap.ic_launcher)
                 .setView(DialogView);
@@ -75,6 +76,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 createNotificationChannel(v);
+            }
+        });
+        builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
             }
         });
         builder.show();
@@ -93,9 +106,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int i) {
-//        taskViewHolder.taskTitle.setText(tasks.get(i).Title);
-//        taskViewHolder.tasklocation.setText(tasks.get(i).location);
-//        taskViewHolder.taskdate.setText(tasks.get(i).date);
+        TaskDB nowTask = tasks.get(i);
+        taskViewHolder.taskTitle.setText(nowTask.getTitle());
+        taskViewHolder.tasklocation.setText(nowTask.getStreetName());
+        String time = nowTask.getDay() + "/" + nowTask.getMonth() + "/" + nowTask.getYear() + "  " + nowTask.getHour() + ":" + nowTask.getMinute();
+        taskViewHolder.taskdate.setText(time);
+//        taskViewHolder.taskdate.setText(tasks.get(i).getDay());
+//        Toast()
     }
     //set notification channel
     private static void createNotificationChannel(View v) {
@@ -120,5 +137,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
     @Override
     public int getItemCount() {
         return tasks.size();
+    }
+    public void addRow(TaskDB data) {
+        tasks.add(data);
+        notifyDataSetChanged();
     }
 }

@@ -10,15 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.sql.Time;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
@@ -34,7 +35,7 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    RVAdapter adapter = new RVAdapter();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -96,8 +97,8 @@ public class HomeFragment extends Fragment {
 
 //        newTask.tasks.add(new Task("Task1" , "02/10/2019" , "home"));
 
-
-        RVAdapter adapter = new RVAdapter();
+//        RVAdapter adapter = new RVAdapter();
+        onResume();
         rv.setLayoutManager(llm);
         rv.setAdapter(adapter);
         // Inflate the layout for this fragment
@@ -124,7 +125,6 @@ public class HomeFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -139,5 +139,25 @@ public class HomeFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+        @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent msg){
+//        TextView test = getView().findViewById(R.id.textView1);
+//        test.setText("Success");
+        adapter.addRow(msg.todo);
+        onDestroy();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

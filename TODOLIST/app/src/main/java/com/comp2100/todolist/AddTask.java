@@ -3,6 +3,7 @@ package com.comp2100.todolist;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,6 +14,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -22,7 +24,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.room.Room;
+import org.greenrobot.eventbus.*;
+import org.joda.time.Hours;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -41,7 +46,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+
 import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -75,7 +83,6 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         SelectDay = dayOfMonth;
         TextView dateText = findViewById(R.id.dateText);
         dateText.setText(date);
-
     }
 
     @Override
@@ -83,6 +90,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         String pickedTime = hourOfDay + ":" + minute;
         SelectHour = hourOfDay;
         SelectMinute = minute;
+
         TextView timeText = findViewById(R.id.timeText);
         timeText.setText(pickedTime);
     }
@@ -160,6 +168,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                         now.get(Calendar.MONTH), // Initial month selection
                         now.get(Calendar.DAY_OF_MONTH) // Inital day selection
                 );
+                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
                 dpd.show(getSupportFragmentManager(), "Datepickerdialog");
             }
         });
@@ -170,15 +179,22 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                 Calendar now = Calendar.getInstance();
                 TimePickerDialog tpd = TimePickerDialog.newInstance(
                         AddTask.this,
-                        now.get(Calendar.HOUR),
+                        now.get(Calendar.HOUR_OF_DAY),
                         now.get(Calendar.MINUTE),
                         now.get(Calendar.SECOND),
                         true
                 );
+                tpd.setVersion(TimePickerDialog.Version.VERSION_2);
                 tpd.show(getSupportFragmentManager(), "Datepickerdialog");
             }
         });
-
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddTask.this.finish();
+            }
+        });
         Button SaveButton = findViewById(R.id.SaveButton);
         databaseHelper = Room.databaseBuilder(getApplicationContext(), DatabaseHelper.class, "todo-db").allowMainThreadQueries().build();
         todoDao = databaseHelper.todoDao();
@@ -193,14 +209,14 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                 RadioButton CheckedButton = findViewById(grp1.getCheckedRadioButtonId() == -1?grp2.getCheckedRadioButtonId() : grp1.getCheckedRadioButtonId());
                 String StreetName = "";
                 if(currtlocation != null)
-                    StreetName = getLocation(currtlocation);
+                    StreetName = getLocation(mLastLocation);
                 String Title  = "" + TitleText.getText();
                 String Description = "" + DespText.getText();
                 //@TODO: enum Task Type
                 Task createTask = new Task();
                 createTask.Title = Title;
                 createTask.Description = Description;
-                createTask.location = currtlocation;
+                createTask.location = mLastLocation;
                 createTask.StreetName = StreetName;
                 createTask.classification = TaskClass.valueOf(CheckedButton.getText().toString());
 
@@ -208,25 +224,32 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
 //                HomeFragment.tasks.tasks.put(date , createTask);
                 //@TODO if not activited
                 TaskDB newTask = new TaskDB();
-                if(findViewById(R.id.NotifySwitch).isActivated())
-                {
-                    newTask.setNotify(true);
-                    newTask.setHour(SelectHour);
-                    newTask.setMinute(SelectMinute);
-                    newTask.setMonth(SelectMonth);
-                    newTask.setDay(SelectDay);
-                    newTask.setYear(SelectYear);
-                }
-                else newTask.setNotify(false);
+//                if(findViewById(R.id.NotifySwitch).isActivated())
+//                {
+//
+//                }
+//                else newTask.setNotify(false);
+                newTask.setNotify(true);
+                newTask.setHour(SelectHour);
+                newTask.setMinute(SelectMinute);
+                newTask.setMonth(SelectMonth);
+                newTask.setDay(SelectDay);
+                newTask.setYear(SelectYear);
                 newTask.setCreateDate(date);
                 newTask.setTitle(Title);
                 newTask.setDescription(Description);
 
+                newTask.setStreetName(StreetName);
                 newTask.setLatitude(currtlocation.getLatitude());
                 newTask.setLongitude(currtlocation.getLongitude());
                 newTask.setIsdone(false);
                 todoDao.insert(newTask);
 
+//                Fragment mFrag = getSupportFragmentManager().findFragmentByTag("fragment_home");
+//                Toast.makeText(
+//                Toast toast=Toast.makeText(getApplicationContext(),,  Toast.LENGTH_SHORT);
+//                toast.show();
+                EventBus.getDefault().post(new MessageEvent(newTask));
                 AddTask.this.finish();
                 //                HomeFragment.newInstance();
 

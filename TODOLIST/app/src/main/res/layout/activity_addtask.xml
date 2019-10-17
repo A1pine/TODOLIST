@@ -4,8 +4,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:clickable="true">
+        android:background="#E0E0E0"
+        android:clickable="true"
+        android:theme="@style/Theme.AppCompat.Light">
 
     <RelativeLayout
             android:layout_width="match_parent"
@@ -14,41 +15,37 @@
             android:layout_marginTop="0dp"
             android:background="#FCF7F7">
 
-        <Switch
-                android:id="@+id/NotifySwitch"
-                android:layout_width="wrap_content"
+        <RelativeLayout
+                android:id="@+id/topLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/belowcolour"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:text="Switch" />
+                android:background="#3F51B5">
 
-        <EditText
-                android:id="@+id/title"
-                style="@android:style/Widget.AutoCompleteTextView"
-                android:layout_width="200dip"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="66dp"
-                android:backgroundTint="@color/cardview_dark_background"
-                android:text="@string/reserved_title"
-                android:textColor="@android:color/darker_gray" />
+            <EditText
+                    android:id="@+id/title"
+                    style="@android:style/Widget.AutoCompleteTextView"
+                    android:layout_width="200dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="66dp"
+                    android:hint="@string/reserved_title"
+                    android:textColor="@android:color/darker_gray"
+                    android:textColorHint="@android:color/darker_gray" />
+        </RelativeLayout>
 
         <EditText
                 android:id="@+id/description"
                 style="@android:style/Widget.AutoCompleteTextView"
                 android:layout_width="300dip"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/title"
+                android:layout_below="@+id/topLayout"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/cardview_dark_background"
-                android:text="@string/reserved_description"
-                android:textColor="@android:color/darker_gray" />
+                android:layout_marginTop="48dp"
+
+                android:hint="@string/reserved_description"
+                android:textColor="@android:color/darker_gray"
+                android:textColorHint="@android:color/darker_gray" />
 
 
         <RadioGroup
@@ -132,16 +129,15 @@
                 android:id="@+id/dateText"
                 android:layout_width="177dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/NotifySwitch"
+                android:layout_below="@+id/belowcolour"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
+                android:drawableLeft="@drawable/ic_date"
                 android:editable="false"
                 android:ems="10"
-                android:forceDarkAllowed="true"
-                android:drawableLeft="@drawable/ic_date"
                 android:text="Select Data"
                 android:textColor="#74030202"
                 android:textSize="24sp" />
@@ -150,16 +146,15 @@
                 android:id="@+id/timeText"
                 android:layout_width="163dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/NotifySwitch"
+                android:layout_below="@+id/belowcolour"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="216dp"
                 android:layout_marginTop="24dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
+                android:drawableLeft="@drawable/ic_time"
                 android:editable="false"
                 android:ems="10"
-                android:forceDarkAllowed="true"
-                android:drawableLeft="@drawable/ic_time"
                 android:text="Select Time"
                 android:textColor="#74030202"
                 android:textSize="24sp" />
@@ -188,12 +183,19 @@
 
         <Button
                 android:id="@+id/SaveButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mapContatiner"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="24dp"
                 android:text="Save" />
+
+        <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/background_transparent"
+                app:srcCompat="@drawable/ic_arrow_back_24px" />
 
 
     </RelativeLayout>

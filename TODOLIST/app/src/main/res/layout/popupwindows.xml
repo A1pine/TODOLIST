@@ -6,7 +6,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:theme="@style/Theme.MaterialComponents.Light.Dialog.Alert"
+        android:background="#FFFFFF">
 
     <RelativeLayout
             android:layout_width="match_parent"
@@ -129,7 +131,6 @@
                 android:drawableLeft="@drawable/ic_date"
                 android:editable="false"
                 android:ems="10"
-                android:forceDarkAllowed="true"
                 android:text="Select Data"
                 android:textColor="#74030202"
                 android:textSize="18sp" />
@@ -148,7 +149,6 @@
                 android:drawableLeft="@drawable/ic_time"
                 android:editable="false"
                 android:ems="10"
-                android:forceDarkAllowed="true"
                 android:text="Select Time"
                 android:textColor="#74030202"
                 android:textSize="18sp" />

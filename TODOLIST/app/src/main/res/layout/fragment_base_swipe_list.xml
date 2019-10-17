@@ -54,24 +54,13 @@
 
         <TextView
                 android:id="@+id/PlaceText"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/DueText"
                 android:layout_marginStart="36dp"
                 android:layout_marginTop="3dp"
                 android:layout_toEndOf="@+id/LeftSideColor"
                 android:text="Place"
-                android:textColor="@android:color/black" />
-
-        <TextView
-                android:id="@+id/DescriptionText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/PlaceText"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="4dp"
-                android:layout_toEndOf="@+id/LeftSideColor"
-                android:text="TextView"
                 android:textColor="@android:color/black" />
 
         <TextView
