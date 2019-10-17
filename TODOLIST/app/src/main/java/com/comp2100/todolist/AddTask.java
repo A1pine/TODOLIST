@@ -136,14 +136,20 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         // MapView requires that the Bundle you pass contain ONLY MapView SDK
         // objects or sub-Bundles.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getView().setClickable(true);
         mapFragment.getMapAsync(this);
-
+        Button testButton = findViewById(R.id.Testbutton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddTask.this, MapSelectActivity.class);
+                startActivity(intent);
+                Toast toast=Toast.makeText(getApplicationContext(), "Clicked" ,  Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
-
-        mapFrag.getMapAsync(this);
         // Make the radiobuttons can only be chosen once
         RadioButton PersonalBtn = findViewById(R.id.PersonalButton);
         RadioButton MeetingBtn = findViewById(R.id.MeetingButton);
@@ -247,8 +253,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
 
 //                Fragment mFrag = getSupportFragmentManager().findFragmentByTag("fragment_home");
 //                Toast.makeText(
-//                Toast toast=Toast.makeText(getApplicationContext(),,  Toast.LENGTH_SHORT);
-//                toast.show();
+
                 EventBus.getDefault().post(new MessageEvent(newTask));
                 AddTask.this.finish();
                 //                HomeFragment.newInstance();
@@ -375,10 +380,14 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
 
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
                         mGoogleMap.setMyLocationEnabled(true);
+                        mGoogleMap.getUiSettings().setZoomGesturesEnabled(false);
+                        mGoogleMap.getUiSettings().setZoomControlsEnabled(false);
+                        mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
+                        mGoogleMap.getUiSettings().setScrollGesturesEnabled(false);
+
                     }
 
                 } else {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
@@ -394,7 +403,6 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         Double lat = curlocation.getLatitude();
         Double lng = curlocation.getLongitude();
         Geocoder geocoder = new Geocoder(AddTask.this, Locale.getDefault());
-
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address obj = addresses.get(0);
