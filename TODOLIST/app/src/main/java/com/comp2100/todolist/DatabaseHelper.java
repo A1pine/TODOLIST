@@ -7,5 +7,5 @@ import androidx.room.TypeConverters;
 @Database(entities = {TaskDB.class}, version = 1, exportSchema = false)
 @TypeConverters({Converter.class})
 public abstract class DatabaseHelper extends RoomDatabase {
-     public abstract TodoDao todoDao();
+     public abstract taskDao taskDao();
 }

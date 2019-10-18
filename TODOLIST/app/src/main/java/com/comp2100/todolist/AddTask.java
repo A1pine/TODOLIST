@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -40,9 +41,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.model.Place;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -65,7 +68,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     Location mLastLocation;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
-    Location currtlocation;
+   LatLng currtlocation;
     Integer SelectMonth;
     Integer SelectYear;
     Integer SelectDay;
@@ -73,8 +76,6 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     Integer SelectMinute;
     String SelectTime;
 
-    public DatabaseHelper databaseHelper;
-    public TodoDao todoDao;
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -141,6 +142,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getView().setClickable(true);
         mapFragment.getMapAsync(this);
+
         Button testButton = findViewById(R.id.Testbutton);
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,70 +207,24 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             }
         });
         Button SaveButton = findViewById(R.id.SaveButton);
-        databaseHelper = Room.databaseBuilder(getApplicationContext(), DatabaseHelper.class, "todo-db").allowMainThreadQueries().build();
-        todoDao = databaseHelper.todoDao();
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //@TODO if user hasn't fill all the field.
-                TextView TitleText = findViewById(R.id.title);
-                TextView DespText = findViewById(R.id.description);
+
+                saveTask();
                 RadioGroup grp1 = findViewById(R.id.rgcolour);
                 RadioGroup grp2 = findViewById(R.id.belowcolour);
                 RadioButton CheckedButton = findViewById(grp1.getCheckedRadioButtonId() == -1?grp2.getCheckedRadioButtonId() : grp1.getCheckedRadioButtonId());
-                String StreetName = "";
-                if(currtlocation != null)
-                    StreetName = getLocation(mLastLocation);
-                String Title  = "" + TitleText.getText();
-                String Description = "" + DespText.getText();
-                //@TODO: enum Task Type
-                Task createTask = new Task();
-                createTask.Title = Title;
-                createTask.Description = Description;
-                createTask.location = mLastLocation;
-                createTask.StreetName = StreetName;
-                createTask.classification = TaskClass.valueOf(CheckedButton.getText().toString());
+                String catalogType = String.valueOf(CheckedButton.getText());
 
-                Date date = new Date(System.currentTimeMillis());
-//                HomeFragment.tasks.tasks.put(date , createTask);
-                //@TODO if not activited
-                TaskDB newTask = new TaskDB();
-//                if(findViewById(R.id.NotifySwitch).isActivated())
-//                {
-//
-//                }
-//                else newTask.setNotify(false);
-                newTask.setNotify(true);
-                newTask.setHour(SelectHour);
-                newTask.setMinute(SelectMinute);
-                newTask.setMonth(SelectMonth);
-                newTask.setDay(SelectDay);
-                newTask.setYear(SelectYear);
-                newTask.setCreateDate(date);
-                newTask.setTitle(Title);
-                newTask.setDescription(Description);
-
-                newTask.setStreetName(StreetName);
-                newTask.setLatitude(currtlocation.getLatitude());
-                newTask.setLongitude(currtlocation.getLongitude());
-                newTask.setIsdone(false);
-                todoDao.insert(newTask);
-
-//                Fragment mFrag = getSupportFragmentManager().findFragmentByTag("fragment_home");
-//                Toast.makeText(
-
-                EventBus.getDefault().post(new MessageEvent(newTask));
-                AddTask.this.finish();
-                //                HomeFragment.newInstance();
-
-
+                Log.e("SaveButton", catalogType);
+                SaveButton.setClickable(false);
             }
         });
     }
     @Override
     public void onPause() {
         super.onPause();
-
         //stop location updates when Activity is no longer active
         if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
@@ -308,24 +264,37 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             if (locationList.size() > 0) {
                 //The last location in the list is the newest
                 Location location = locationList.get(locationList.size() - 1);
-                currtlocation = location;
-                Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
                 mLastLocation = location;
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
 
-                //Place current location marker
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                markerOptions.title("Current Position");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
-                mGoogleMap.getUiSettings().setZoomGesturesEnabled(false);
                 //move map camera
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude)).zoom(16).build();
+                mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//            List<Location> locationList = locationResult.getLocations();
+//            if (locationList.size() > 0) {
+//                //The last location in the list is the newest
+//                Location location = locationList.get(locationList.size() - 1);
+//                currtlocation = location;
+//                Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
+//                mLastLocation = location;
+//                if (mCurrLocationMarker != null) {
+//                    mCurrLocationMarker.remove();
+//                }
+//
+//                //Place current location marker
+//                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//                MarkerOptions markerOptions = new MarkerOptions();
+//                markerOptions.position(latLng);
+//                markerOptions.title("Current Position");
+//                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+//                mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+//                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
+//                mGoogleMap.getUiSettings().setZoomGesturesEnabled(false);
+//                //move map camera
+//                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 //                getLocation(location.getLatitude() , location.getLongitude());
             }
         }
@@ -403,16 +372,16 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             // permissions this app might request
         }
     }
-    public String getLocation(Location curlocation) {
-        Double lat = curlocation.getLatitude();
-        Double lng = curlocation.getLongitude();
+    public String getStreetName(LatLng curlocation) {
+        Double lat = curlocation.latitude;
+        Double lng = curlocation.longitude;
         Geocoder geocoder = new Geocoder(AddTask.this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address obj = addresses.get(0);
             String add = obj.getAddressLine(0);
 
-
+            Toast toast=Toast.makeText(getApplicationContext(), add ,  Toast.LENGTH_LONG);
             return add;
 
 
@@ -426,12 +395,16 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(Place place){
-        mGoogleMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()));
+    public void onEvent(MessageEvent msg){
+        Place place = msg.place;
+        if (mCurrLocationMarker != null) {
+            mCurrLocationMarker.remove();
+        }
+        mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()));
+        currtlocation = place.getLatLng();
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14));
-        Toast toast=Toast.makeText(getApplicationContext(), "Sent" ,  Toast.LENGTH_LONG);
-//        currtlocation = place.getLatLng()
-
+//        currtlocation = place.getLatLng()\
+//        onDestroy();
     }
 
     @Override
@@ -444,7 +417,89 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    private void saveTask(){
+        TextView TitleText = findViewById(R.id.title);
+        TextView DespText = findViewById(R.id.description);
+        RadioGroup grp1 = findViewById(R.id.rgcolour);
+        RadioGroup grp2 = findViewById(R.id.belowcolour);
+        RadioButton CheckedButton = findViewById(grp1.getCheckedRadioButtonId() == -1?grp2.getCheckedRadioButtonId() : grp1.getCheckedRadioButtonId());
+        String StreetName = "";
+        String catalogType = String.valueOf(CheckedButton.getText());
+        if(currtlocation != null)
+            StreetName = getStreetName(currtlocation);
+        if(TitleText.getText() == null)
+            Toast.makeText(AddTask.this, "Please input Title", Toast.LENGTH_LONG).show();
+        else if(DespText.getText() == null)
+            Toast.makeText(AddTask.this, "Please input Description", Toast.LENGTH_LONG).show();
+        else if(mCurrLocationMarker == null)
+            Toast.makeText(AddTask.this, "Please Select a place", Toast.LENGTH_LONG).show();
+        else if (SelectHour == null)
+            Toast.makeText(AddTask.this, "Please Select time", Toast.LENGTH_LONG).show();
+        else if(SelectYear == null)
+            Toast.makeText(AddTask.this, "Please Select a date", Toast.LENGTH_LONG).show();
+        else{
+            String Title  = String.valueOf(TitleText.getText());
+            String  Description = String.valueOf(DespText.getText());
+
+
+            String finalStreetName = StreetName;
+
+            class SaveTask extends AsyncTask<Void, Void, Void> {
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+
+                    //creating a task
+                    TaskDB newTask = new TaskDB();
+                    newTask.setTitle(Title);
+                    newTask.setDescription(Description);
+                    newTask.setStreetName(finalStreetName);
+                    newTask.setLatitude(currtlocation.latitude);
+                    newTask.setLongitude(currtlocation.longitude);
+                    Date date = new Date(System.currentTimeMillis());
+                    newTask.setNotify(true);
+                    newTask.setHour(SelectHour);
+                    newTask.setMinute(SelectMinute);
+                    newTask.setMonth(SelectMonth);
+                    newTask.setDay(SelectDay);
+                    newTask.setYear(SelectYear);
+                    newTask.setCreateDate(date);
+                    newTask.setIsdone(false);
+
+                    newTask.setCatalog(catalogType);
+
+
+
+                    //adding to database
+                    DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                            .taskDao()
+                            .insert(newTask);
+
+                    EventBus.getDefault().post(new TaskEvent(newTask));
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    finish();
+//                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+
+                }
+
+            }
+            SaveTask st = new SaveTask();
+            st.execute();
+//            todoDao.insert(newTask);
+
+
+
+            AddTask.this.finish();
+        }
     }
 }

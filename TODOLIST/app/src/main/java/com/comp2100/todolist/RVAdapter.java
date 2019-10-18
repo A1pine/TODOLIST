@@ -2,6 +2,7 @@ package com.comp2100.todolist;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,35 +31,48 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
-    ArrayList<TaskDB> tasks = new ArrayList<>();
+    static List<TaskDB> tasks;
+
+    private Context mCtx;
+    public RVAdapter(Context mCtx, List<TaskDB> taskList) {
+        this.mCtx = mCtx;
+        this.tasks = taskList;
+    }
     RVAdapter(){
 
     }
-    RVAdapter(ArrayList<TaskDB> tasks){
+    RVAdapter(List<TaskDB> tasks){
         this.tasks = tasks;
     }
 
     private static View DialogView;
-    public  static class TaskViewHolder extends RecyclerView.ViewHolder{
+    public class TaskViewHolder extends RecyclerView.ViewHolder{
         CardView cv;
         TextView taskTitle;
         TextView tasklocation;
         TextView taskdate;
+        RelativeLayout mycolor;
+
         public TaskViewHolder(View itemView) {
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.CardView);
             taskTitle = itemView.findViewById(R.id.TextTitle);
             tasklocation = itemView.findViewById(R.id.PlaceText);
             taskdate = itemView.findViewById(R.id.DueText);
+            mycolor = itemView.findViewById(R.id.LeftSideColor);
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showDialogForView(v);
+                    TaskDB task = tasks.get(getAdapterPosition());
+                    showDialogForView(v , task);
+
+//                    Toast toast=Toast.makeText(v.getContext(), task.getTitle(),  Toast.LENGTH_LONG);
+//                    toast.show();
                 }
             });
         }
     }
-    private static void showDialogForView(View v) {
+    private void showDialogForView(View v, TaskDB taskDB) {
         LayoutInflater li = LayoutInflater.from(v.getContext());
         if (DialogView != null) {
             ViewGroup parent = (ViewGroup) DialogView.getParent();
@@ -64,24 +81,36 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
         }
         try {
             DialogView = li.inflate(R.layout.popupwindows , null);
+            TextView textTitle = DialogView.findViewById(R.id.title);
+            TextView descTitle = DialogView.findViewById(R.id.description);
+            textTitle.setHint(taskDB.getTitle());
+            //textTitle.setHint(taskDB.getDescription());
+
         } catch (InflateException e) {
             /* map is already there, just return view as it is */
         }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext() , R.style.Theme_MaterialComponents_Light_Dialog_Alert)
                 .setTitle("Edit")
                 .setIcon(R.mipmap.ic_launcher)
                 .setView(DialogView);
-
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 createNotificationChannel(v);
             }
         });
         builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                tasks.remove(taskDB);
+                DatabaseClient
+                        .getInstance(v.getContext())
+                        .getAppDatabase()
+                        .taskDao()
+                        .delete(taskDB);
+                notifyDataSetChanged();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -111,6 +140,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
         taskViewHolder.tasklocation.setText(nowTask.getStreetName());
         String time = nowTask.getDay() + "/" + nowTask.getMonth() + "/" + nowTask.getYear() + "  " + nowTask.getHour() + ":" + nowTask.getMinute();
         taskViewHolder.taskdate.setText(time);
+        String catalog = nowTask.getCatalog();
+//        Toast.makeText(, "Saved", Toast.LENGTH_LONG).show();
+        if(catalog.equals("Personal"))
+            taskViewHolder.mycolor.setBackgroundColor(0xFFEB3B);
+
 //        taskViewHolder.taskdate.setText(tasks.get(i).getDay());
 //        Toast()
     }
@@ -142,4 +176,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
         tasks.add(data);
         notifyDataSetChanged();
     }
+
+
 }

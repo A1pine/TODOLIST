@@ -7,10 +7,11 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
-public interface TodoDao {
+public interface taskDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TaskDB task);
@@ -21,6 +22,9 @@ public interface TodoDao {
     @Delete
     void delete(TaskDB task);
 
-    @Query("select * from todo_db")
-    List<TaskDB> findAll();
+    @Query("select * from taskdb")
+    List<TaskDB> getAll();
+
+    @Query("select * from taskdb where catalog = :taskcatalog")
+    List<TaskDB> gettask(String taskcatalog);
 }

@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         //change star button color
         View view;
         view = this.getWindow().getDecorView();
-        view.setBackgroundResource(R.color.coloryellow);
+       view.setBackgroundResource(R.color.colorTab);
 
 
 

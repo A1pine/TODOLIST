@@ -86,6 +86,7 @@ public class MapSelectActivity extends AppCompatActivity implements OnMapReadyCa
                 {
                     sendLocation();
                     getback();
+
                 }
                 else {
                     Toast toast=Toast.makeText(getApplicationContext(), "Please Select a place" ,  Toast.LENGTH_LONG);

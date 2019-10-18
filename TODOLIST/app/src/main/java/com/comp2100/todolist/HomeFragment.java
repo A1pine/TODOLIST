@@ -3,6 +3,7 @@ package com.comp2100.todolist;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,10 +17,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.Task;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -35,14 +42,14 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    RVAdapter adapter = new RVAdapter();
+    RVAdapter adapter;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    static Tasks tasks = new Tasks();
     private OnFragmentInteractionListener mListener;
-    private DatabaseHelper databaseHelper;
-
+    //find recycleview
+    RecyclerView rv;
+    LinearLayoutManager llm;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -86,21 +93,24 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+
+
+
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        databaseHelper = Room.databaseBuilder(getActivity().getApplicationContext(), DatabaseHelper.class, "todo-db").fallbackToDestructiveMigration().build();
-        //find recycleview
-        RecyclerView rv = view.findViewById(R.id.base_swipe_list);
-        LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
-//        newTask.initializeData();
-        //@TODO : AddtaskButton
+        rv = view.findViewById(R.id.base_swipe_list);
 
-//        newTask.tasks.add(new Task("Task1" , "02/10/2019" , "home"));
+        //Get the List useing database
 
-//        RVAdapter adapter = new RVAdapter();
+
+        llm = new LinearLayoutManager(view.getContext());
+        getTasks();
+
         onResume();
-        rv.setLayoutManager(llm);
-        rv.setAdapter(adapter);
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -139,11 +149,16 @@ public class HomeFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-        @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MessageEvent msg){
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(TaskEvent msg){
 //        TextView test = getView().findViewById(R.id.textView1);
 //        test.setText("Success");
-        adapter.addRow(msg.todo);
+
+            Log.i("HomeFragment", "sent");
+        getTasks();
+
         onDestroy();
     }
 
@@ -157,7 +172,36 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+    private void getTasks() {
+        class GetTasks extends AsyncTask<Void, Void, List<TaskDB>> {
+
+            //Link to Database and return the List;
+            @Override
+            protected List<TaskDB> doInBackground(Void... voids) {
+                List<TaskDB> taskList = DatabaseClient
+                        .getInstance(getContext())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getAll();
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<TaskDB> tasks) {
+                super.onPostExecute(tasks);
+//                Toast toast=Toast.makeText(getContext(), "Sent!" ,  Toast.LENGTH_SHORT);
+//                toast.show();
+
+                RVAdapter adapter = new RVAdapter(tasks);
+                rv.setLayoutManager(llm);
+                rv.setAdapter(adapter);
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
     }
 }

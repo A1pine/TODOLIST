@@ -1,9 +1,11 @@
 package com.comp2100.todolist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -75,7 +77,54 @@ public class TaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_task, container, false);
+        View v =  inflater.inflate(R.layout.fragment_task, container, false);
+        CardView PerosonView = v.findViewById(R.id.PersonalView);
+        PerosonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetCatalog("Personal");
+            }
+        });
+        CardView WorkView = v.findViewById(R.id.WorkView);
+        WorkView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetCatalog("Work");
+            }
+        });
+
+        CardView MeetingView = v.findViewById(R.id.MeetingView);
+        MeetingView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetCatalog("Meeting");
+            }
+        });
+
+        CardView ShoppingView = v.findViewById(R.id.ShoppingView);
+        ShoppingView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetCatalog("Shopping");
+            }
+        });
+
+        CardView PartyView = v.findViewById(R.id.PartyView);
+        PartyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetCatalog("Party");
+            }
+        });
+
+        CardView StudyView = v.findViewById(R.id.StudyView);
+        StudyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetCatalog("Study");
+            }
+        });
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -115,5 +164,13 @@ public class TaskFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private void SetCatalog(String name){
+        Intent intent = new Intent(getActivity(), CatalogActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("CatalogActivity", name);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

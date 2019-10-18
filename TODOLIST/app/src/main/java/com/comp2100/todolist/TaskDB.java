@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Entity(tableName = "todo_db")
+@Entity
 public class TaskDB {
     @PrimaryKey
     private Date createDate;
@@ -51,6 +51,9 @@ public class TaskDB {
 
     @ColumnInfo(name = "isdone")
     private boolean isdone;
+
+    @ColumnInfo
+    private String catalog;
 
     @ColumnInfo
     private int minute;

@@ -23,13 +23,14 @@
                 android:layout_weight="8"
                 android:alignmentMode="alignMargins"
                 android:background="@color/colorTab"
-                android:columnCount="2"
                 android:columnOrderPreserved="false"
                 android:padding="14dp"
+                android:columnCount="2"
                 android:rowCount="3">
 
 
             <androidx.cardview.widget.CardView
+                    android:id="@+id/PersonalView"
                     android:layout_width="0dp"
                     android:layout_height="144dp"
                     android:layout_rowWeight="1"
@@ -38,6 +39,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="@android:color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="8dp">
 
@@ -70,6 +72,7 @@
 
 
             <androidx.cardview.widget.CardView
+                    android:id="@+id/WorkView"
                     android:layout_width="0dp"
                     android:layout_height="144dp"
                     android:layout_rowWeight="1"
@@ -78,6 +81,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="@android:color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="8dp">
 
@@ -110,6 +114,7 @@
 
 
             <androidx.cardview.widget.CardView
+                    android:id="@+id/MeetingView"
                     android:layout_width="0dp"
                     android:layout_height="144dp"
                     android:layout_rowWeight="1"
@@ -118,6 +123,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="@android:color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="8dp">
 
@@ -150,6 +156,7 @@
 
 
             <androidx.cardview.widget.CardView
+                    android:id="@+id/ShoppingView"
                     android:layout_width="0dp"
                     android:layout_height="144dp"
                     android:layout_rowWeight="1"
@@ -158,6 +165,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="@android:color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="8dp">
 
@@ -190,6 +198,7 @@
 
 
             <androidx.cardview.widget.CardView
+                    android:id="@+id/PartyView"
                     android:layout_width="0dp"
                     android:layout_height="144dp"
                     android:layout_rowWeight="1"
@@ -198,6 +207,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="@android:color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="8dp">
 
@@ -230,6 +240,7 @@
 
 
             <androidx.cardview.widget.CardView
+                    android:id="@+id/StudyView"
                     android:layout_width="0dp"
                     android:layout_height="144dp"
                     android:layout_rowWeight="1"
@@ -238,6 +249,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="@android:color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="8dp">
 
