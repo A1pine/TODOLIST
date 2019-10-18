@@ -113,7 +113,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> im
             mycolor = itemView.findViewById(R.id.LeftSideColor);
             LeftDays = itemView.findViewById(R.id.DayleftText);
             LeftorPast = itemView.findViewById(R.id.isGone);
-            isdownBox = itemView.findViewById(R.id.isDownBox);
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

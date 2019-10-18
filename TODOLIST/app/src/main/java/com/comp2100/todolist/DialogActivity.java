@@ -683,7 +683,6 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
                     newTask.setMonth(SelectMonth);
                     newTask.setDay(SelectDay);
                     newTask.setYear(SelectYear);
-                    newTask.setCreateDate(date);
                     newTask.setIsdone(false);
 
                     newTask.setCatalog(catalogType);
