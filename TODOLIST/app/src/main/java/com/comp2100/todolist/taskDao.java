@@ -27,4 +27,7 @@ public interface taskDao {
 
     @Query("select * from taskdb where catalog = :taskcatalog")
     List<TaskDB> gettask(String taskcatalog);
+
+    @Query("select * from taskdb where createDate = :thisdate")
+    TaskDB getthetask(Date thisdate);
 }

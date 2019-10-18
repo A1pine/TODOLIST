@@ -161,7 +161,10 @@ public class HomeFragment extends Fragment {
 
         onDestroy();
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void DeleteOnEvent(TaskEvent tks){
+        adapter.notifyDataSetChanged();
+    }
     @Override
     public void onResume() {
         super.onResume();

@@ -1,7 +1,6 @@
 package com.comp2100.todolist;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +24,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.room.Room;
-import org.greenrobot.eventbus.*;
-import org.joda.time.Hours;
-import org.w3c.dom.Text;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -41,28 +34,27 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.model.Place;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Observable;
 
-public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
+public class DialogActivity extends AppCompatActivity implements OnMapReadyCallback,  DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener{
+    TaskDB mytask = new TaskDB();
     String strBtnSelected = "unInit";
     GoogleMap mGoogleMap;
     SupportMapFragment mapFrag;
@@ -70,15 +62,16 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     Location mLastLocation;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
-   LatLng currtlocation;
+    LatLng currtlocation;
     String SelectMonth;
     String SelectYear;
     String SelectDay;
     String SelectHour;
     String SelectMinute;
     String SelectTime;
-
-
+    CameraPosition cameraPosition;
+    CameraPosition TaskcameraPosition;
+    MarkerOptions markerOptions = new MarkerOptions();
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
@@ -129,56 +122,32 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             }
         }
     }
-    BtnSelected btnListener1 = new BtnSelected("1");
-    BtnSelected btnListener2 = new BtnSelected("2");
-    BtnSelected btnListener3 = new BtnSelected("3");
-    BtnSelected btnListener4 = new BtnSelected("4");
-    BtnSelected btnListener5 = new BtnSelected("5");
-    BtnSelected btnListener6 = new BtnSelected("6");
+    DialogActivity.BtnSelected btnListener1 = new DialogActivity.BtnSelected("1");
+    DialogActivity.BtnSelected btnListener2 = new DialogActivity.BtnSelected("2");
+    DialogActivity.BtnSelected btnListener3 = new DialogActivity.BtnSelected("3");
+    DialogActivity.BtnSelected btnListener4 = new DialogActivity.BtnSelected("4");
+    DialogActivity.BtnSelected btnListener5 = new DialogActivity.BtnSelected("5");
+    DialogActivity.BtnSelected btnListener6 = new DialogActivity.BtnSelected("6");
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addtask);
-
-        //Register Subsriber
-        onResume();
+        setContentView(R.layout.popupwindows);
+        final TaskDB task = (TaskDB) getIntent().getSerializableExtra("task");
+        Button DeleteButton = findViewById(R.id.DeleteButton);
+        DeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTask(task);
+            }
+        });
         // *** IMPORTANT ***
         // MapView requires that the Bundle you pass contain ONLY MapView SDK
         // objects or sub-Bundles.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getView().setClickable(true);
-        mapFragment.getView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddTask.this, MapSelectActivity.class);
-                startActivity(intent);
-                Toast toast=Toast.makeText(getApplicationContext(), "Clicked" ,  Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
         mapFragment.getMapAsync(this);
+        loadTask(task);
 
-        ImageButton testButton = findViewById(R.id.Testbutton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddTask.this, MapSelectActivity.class);
-                startActivity(intent);
-
-                Toast toast=Toast.makeText(getApplicationContext(), "Clicked" ,  Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-        TextView locationtext = findViewById(R.id.locationtext);
-        locationtext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddTask.this, MapSelectActivity.class);
-                startActivity(intent);
-                Toast toast=Toast.makeText(getApplicationContext(), "Clicked" ,  Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Make the radiobuttons can only be chosen once
@@ -200,7 +169,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             public void onClick(View v) {
                 Calendar now = Calendar.getInstance();
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        AddTask.this,
+                        DialogActivity.this,
                         now.get(Calendar.YEAR), // Initial year selection
                         now.get(Calendar.MONTH), // Initial month selection
                         now.get(Calendar.DAY_OF_MONTH) // Inital day selection
@@ -215,7 +184,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             public void onClick(View v) {
                 Calendar now = Calendar.getInstance();
                 TimePickerDialog tpd = TimePickerDialog.newInstance(
-                        AddTask.this,
+                        DialogActivity.this,
                         now.get(Calendar.HOUR_OF_DAY),
                         now.get(Calendar.MINUTE),
                         now.get(Calendar.SECOND),
@@ -225,28 +194,45 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                 tpd.show(getSupportFragmentManager(), "Datepickerdialog");
             }
         });
-        ImageButton backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddTask.this.finish();
-            }
-        });
+//        ImageButton backButton = findViewById(R.id.backButton);
+//        backButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DialogActivity.this.finish();
+//            }
+//        });
         Button SaveButton = findViewById(R.id.SaveButton);
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 saveTask();
-                RadioGroup grp1 = findViewById(R.id.rgcolour);
-                RadioGroup grp2 = findViewById(R.id.belowcolour);
-                RadioButton CheckedButton = findViewById(grp1.getCheckedRadioButtonId() == -1?grp2.getCheckedRadioButtonId() : grp1.getCheckedRadioButtonId());
-                String catalogType = String.valueOf(CheckedButton.getText());
-
-                Log.e("SaveButton", catalogType);
-                SaveButton.setClickable(false);
             }
         });
+
+
+
+        ImageButton testButton = findViewById(R.id.Testbutton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DialogActivity.this, MapSelectActivity.class);
+                startActivity(intent);
+                Toast toast=Toast.makeText(getApplicationContext(), "Clicked" ,  Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+        TextView locationtext = findViewById(R.id.locationtext);
+        locationtext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DialogActivity.this, MapSelectActivity.class);
+                startActivity(intent);
+                Toast toast=Toast.makeText(getApplicationContext(), "Clicked" ,  Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
     }
     @Override
     public void onPause() {
@@ -259,8 +245,8 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(500); // two minute interval
         mLocationRequest.setFastestInterval(500);
@@ -282,6 +268,10 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
             mGoogleMap.setMyLocationEnabled(true);
         }
+
+
+        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mytask.getLatitude() , mytask.getLongitude()), 14));
     }
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -299,6 +289,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude)).zoom(16).build();
                 mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
 //            List<Location> locationList = locationResult.getLocations();
 //            if (locationList.size() > 0) {
 //                //The last location in the list is the newest
@@ -344,7 +335,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(AddTask.this,
+                                ActivityCompat.requestPermissions(DialogActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                         MY_PERMISSIONS_REQUEST_LOCATION );
                             }
@@ -401,7 +392,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     public String getStreetName(LatLng curlocation) {
         Double lat = curlocation.latitude;
         Double lng = curlocation.longitude;
-        Geocoder geocoder = new Geocoder(AddTask.this, Locale.getDefault());
+        Geocoder geocoder = new Geocoder(DialogActivity.this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address obj = addresses.get(0);
@@ -420,33 +411,6 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         return "Address is not Available";
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MessageEvent msg){
-        Place place = msg.place;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
-        }
-        mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()));
-        currtlocation = place.getLatLng();
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14));
-//        currtlocation = place.getLatLng()\
-//        onDestroy();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
-    }
-
     private void saveTask(){
         TextView TitleText = findViewById(R.id.title);
         TextView DespText = findViewById(R.id.description);
@@ -458,15 +422,15 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         if(currtlocation != null)
             StreetName = getStreetName(currtlocation);
         if(TitleText.getText() == null)
-            Toast.makeText(AddTask.this, "Please input Title", Toast.LENGTH_LONG).show();
+            Toast.makeText(DialogActivity.this, "Please input Title", Toast.LENGTH_LONG).show();
         else if(DespText.getText() == null)
-            Toast.makeText(AddTask.this, "Please input Description", Toast.LENGTH_LONG).show();
+            Toast.makeText(DialogActivity.this, "Please input Description", Toast.LENGTH_LONG).show();
         else if(mCurrLocationMarker == null)
-            Toast.makeText(AddTask.this, "Please Select a place", Toast.LENGTH_LONG).show();
+            Toast.makeText(DialogActivity.this, "Please Select a place", Toast.LENGTH_LONG).show();
         else if (SelectHour == null)
-            Toast.makeText(AddTask.this, "Please Select time", Toast.LENGTH_LONG).show();
+            Toast.makeText(DialogActivity.this, "Please Select time", Toast.LENGTH_LONG).show();
         else if(SelectYear == null)
-            Toast.makeText(AddTask.this, "Please Select a date", Toast.LENGTH_LONG).show();
+            Toast.makeText(DialogActivity.this, "Please Select a date", Toast.LENGTH_LONG).show();
         else{
             String Title  = String.valueOf(TitleText.getText());
             String  Description = String.valueOf(DespText.getText());
@@ -525,8 +489,131 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
 
 
 
-            AddTask.this.finish();
+            DialogActivity.this.finish();
         }
+    }
+    private void getTask(){
+        class GetTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                TaskDB mytasks = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .taskDao()
+                        .getthetask(mytask.getCreateDate());
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+               init();
+//                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+    }
+
+        GetTask gt = new  GetTask();
+        gt.execute();
+    }
+    void init(){
+
+
+    }
+    private void loadTask(TaskDB mytask) {
+        TextView TitleText = findViewById(R.id.title);
+        TextView DespText = findViewById(R.id.description);
+        TextView dateText = findViewById(R.id.dateText);
+        TextView timeText = findViewById(R.id.timeText);
+        RadioGroup grp1 = findViewById(R.id.rgcolour);
+        RadioGroup grp2 = findViewById(R.id.belowcolour);
+        TitleText.setText(mytask.getTitle());
+        DespText.setText(mytask.getTitle());
+        RadioButton PersonalBtn = findViewById(R.id.PersonalButton);
+        RadioButton MeetingBtn = findViewById(R.id.MeetingButton);
+        RadioButton PartyBtn = findViewById(R.id.PartyButton);
+        RadioButton WorkBtn = findViewById(R.id.WorkButton);
+        RadioButton ShoppingBtn = findViewById(R.id.ShoppingButton);
+        RadioButton StudyBtn = findViewById(R.id.StudyButton);
+        String catalog = mytask.getCatalog();
+
+        if(catalog.equals("Personal")) PersonalBtn.setChecked(true);
+        if(catalog.equals("Meeting")) MeetingBtn.setChecked(true);
+        if(catalog.equals("Party")) PartyBtn.setChecked(true);
+        if(catalog.equals("Work")) WorkBtn.setChecked(true);
+        if(catalog.equals("Shopping")) ShoppingBtn.setChecked(true);
+        if(catalog.equals("Study")) StudyBtn.setChecked(true);
+
+
+        LatLng latLng = new LatLng(mytask.getLatitude(), mytask.getLongitude());
+
+        markerOptions.position(latLng);
+        markerOptions.title("Task Position");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+
+//        mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()));
+//        TaskcameraPosition = new CameraPosition.Builder().target(new LatLng(mytask.getLatitude(), mytask.getLongitude())).zoom(16).build();
+
+        Log.e("Null?" , String.valueOf(cameraPosition == null));
+        Log.e("Null?!" , String.valueOf(mGoogleMap == null));
+
+        String pickedTime = mytask.getHour() + ":" + mytask.getMinute();
+
+        String date = mytask.getDay()+"/"+(mytask.getMonth())+"/"+mytask.getYear();
+        dateText.setText(date);
+        timeText.setText(pickedTime);
+    }
+    private void deleteTask(final TaskDB task) {
+        class DeleteTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .taskDao()
+                        .delete(task);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_LONG).show();
+                TaskEvent taskEvent = new TaskEvent(task);
+                EventBus.getDefault().post(taskEvent);
+                finish();
+            }
+        }
+
+        DeleteTask dt = new DeleteTask();
+        dt.execute();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent msg){
+        Place place = msg.place;
+        if (mCurrLocationMarker != null) {
+            mCurrLocationMarker.remove();
+        }
+        mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()));
+        currtlocation = place.getLatLng();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14));
+//        currtlocation = place.getLatLng()\
+//        onDestroy();
     }
     public String get0(String s){
         StringBuffer sb = new StringBuffer();

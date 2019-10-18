@@ -16,6 +16,7 @@
             tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".CatalogActivity"></activity>
         <activity android:name=".MapSelectActivity" />
+        <activity android:name=".DialogActivity" />
         <activity android:name=".NewReminder" />
         <activity android:name=".MainActivity">
             <intent-filter>

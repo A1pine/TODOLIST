@@ -101,5 +101,17 @@
                 app:shine_size="40dp"
                 app:siShape="@raw/star" />
 
+        <TextView
+                android:id="@+id/isGone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Days"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="24dp"
+                android:text="left"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

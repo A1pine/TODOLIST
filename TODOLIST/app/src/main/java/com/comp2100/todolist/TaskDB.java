@@ -12,6 +12,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-public class TaskDB {
+public class TaskDB implements Serializable {
     @PrimaryKey
     private Date createDate;
 
@@ -56,15 +57,15 @@ public class TaskDB {
     private String catalog;
 
     @ColumnInfo
-    private int minute;
+    private String minute;
     @ColumnInfo
-    private int hour;
+    private String hour;
     @ColumnInfo
-    private int day;
+    private String day;
     @ColumnInfo
-    private int month;
+    private String month;
     @ColumnInfo
-    private int year;
+    private String year;
 
 
 }
