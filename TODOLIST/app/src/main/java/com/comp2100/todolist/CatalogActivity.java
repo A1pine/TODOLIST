@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.List;
@@ -27,8 +29,7 @@ public class CatalogActivity extends AppCompatActivity {
 
         rv = findViewById(R.id.CatalogRV);
 
-        //Get the List useing database
-
+        //Get the List using database
 
         llm = new LinearLayoutManager(getApplicationContext());
         taskcatalog = catalog;

@@ -53,7 +53,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class DialogActivity extends AppCompatActivity implements OnMapReadyCallback,  DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener{
+public class DialogActivity extends AppCompatActivity implements OnMapReadyCallback,  DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
     TaskDB mytask = new TaskDB();
     String strBtnSelected = "unInit";
     GoogleMap mGoogleMap;
@@ -72,15 +72,16 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
     CameraPosition cameraPosition;
     CameraPosition TaskcameraPosition;
     MarkerOptions markerOptions = new MarkerOptions();
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
         SelectMonth = String.valueOf(monthOfYear + 1);
         SelectYear = String.valueOf(year);
         SelectDay = String.valueOf(dayOfMonth);
-        if(SelectDay.length() == 1) SelectDay = get0(SelectDay);
-        if(SelectMonth.length() == 1) SelectMonth = get0(SelectMonth);
-        String date = SelectDay+"/"+SelectMonth+"/"+year;
+        if (SelectDay.length() == 1) SelectDay = get0(SelectDay);
+        if (SelectMonth.length() == 1) SelectMonth = get0(SelectMonth);
+        String date = SelectDay + "/" + SelectMonth + "/" + year;
         TextView dateText = findViewById(R.id.dateText);
         dateText.setText(date);
     }
@@ -89,8 +90,8 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         SelectHour = String.valueOf(hourOfDay);
         SelectMinute = String.valueOf(minute);
-        if(SelectHour.length() == 1) SelectHour = get0(SelectHour);
-        if(SelectMinute.length() == 1) SelectMinute = get0(SelectMinute);
+        if (SelectHour.length() == 1) SelectHour = get0(SelectHour);
+        if (SelectMinute.length() == 1) SelectMinute = get0(SelectMinute);
         String pickedTime = SelectHour + ":" + SelectMinute;
         TextView timeText = findViewById(R.id.timeText);
         timeText.setText(pickedTime);
@@ -122,12 +123,14 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
             }
         }
     }
+
     DialogActivity.BtnSelected btnListener1 = new DialogActivity.BtnSelected("1");
     DialogActivity.BtnSelected btnListener2 = new DialogActivity.BtnSelected("2");
     DialogActivity.BtnSelected btnListener3 = new DialogActivity.BtnSelected("3");
     DialogActivity.BtnSelected btnListener4 = new DialogActivity.BtnSelected("4");
     DialogActivity.BtnSelected btnListener5 = new DialogActivity.BtnSelected("5");
     DialogActivity.BtnSelected btnListener6 = new DialogActivity.BtnSelected("6");
+
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -206,10 +209,9 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
 
-                saveTask();
+                updateTask(task);
             }
         });
-
 
 
         ImageButton testButton = findViewById(R.id.Testbutton);
@@ -218,8 +220,15 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 Intent intent = new Intent(DialogActivity.this, MapSelectActivity.class);
                 startActivity(intent);
-                Toast toast=Toast.makeText(getApplicationContext(), "Clicked" ,  Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT);
                 toast.show();
+            }
+        });
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogActivity.this.finish();
             }
         });
         TextView locationtext = findViewById(R.id.locationtext);
@@ -228,12 +237,13 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 Intent intent = new Intent(DialogActivity.this, MapSelectActivity.class);
                 startActivity(intent);
-                Toast toast=Toast.makeText(getApplicationContext(), "Clicked" ,  Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
 
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -242,6 +252,7 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -263,16 +274,16 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
                 //Request Location Permission
                 checkLocationPermission();
             }
-        }
-        else {
+        } else {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
             mGoogleMap.setMyLocationEnabled(true);
         }
 
 
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mytask.getLatitude() , mytask.getLongitude()), 14));
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mytask.getLatitude(), mytask.getLongitude()), 14));
     }
+
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -317,6 +328,7 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     };
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -337,7 +349,7 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(DialogActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
                         .create()
@@ -348,7 +360,7 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION );
+                        MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
     }
@@ -389,6 +401,7 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
             // permissions this app might request
         }
     }
+
     public String getStreetName(LatLng curlocation) {
         Double lat = curlocation.latitude;
         Double lng = curlocation.longitude;
@@ -398,9 +411,8 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
             Address obj = addresses.get(0);
             String add = obj.getAddressLine(0);
 
-            Toast toast=Toast.makeText(getApplicationContext(), add ,  Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), add, Toast.LENGTH_LONG);
             return add;
-
 
 
         } catch (IOException e) {
@@ -411,29 +423,29 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
         return "Address is not Available";
     }
 
-    private void saveTask(){
+    private void saveTask() {
         TextView TitleText = findViewById(R.id.title);
         TextView DespText = findViewById(R.id.description);
         RadioGroup grp1 = findViewById(R.id.rgcolour);
         RadioGroup grp2 = findViewById(R.id.belowcolour);
-        RadioButton CheckedButton = findViewById(grp1.getCheckedRadioButtonId() == -1?grp2.getCheckedRadioButtonId() : grp1.getCheckedRadioButtonId());
+        RadioButton CheckedButton = findViewById(grp1.getCheckedRadioButtonId() == -1 ? grp2.getCheckedRadioButtonId() : grp1.getCheckedRadioButtonId());
         String StreetName = "";
         String catalogType = String.valueOf(CheckedButton.getText());
-        if(currtlocation != null)
+        if (currtlocation != null)
             StreetName = getStreetName(currtlocation);
-        if(TitleText.getText() == null)
+        if (TitleText.getText() == null)
             Toast.makeText(DialogActivity.this, "Please input Title", Toast.LENGTH_LONG).show();
-        else if(DespText.getText() == null)
+        else if (DespText.getText() == null)
             Toast.makeText(DialogActivity.this, "Please input Description", Toast.LENGTH_LONG).show();
-        else if(mCurrLocationMarker == null)
+        else if (mCurrLocationMarker == null)
             Toast.makeText(DialogActivity.this, "Please Select a place", Toast.LENGTH_LONG).show();
         else if (SelectHour == null)
             Toast.makeText(DialogActivity.this, "Please Select time", Toast.LENGTH_LONG).show();
-        else if(SelectYear == null)
+        else if (SelectYear == null)
             Toast.makeText(DialogActivity.this, "Please Select a date", Toast.LENGTH_LONG).show();
-        else{
-            String Title  = String.valueOf(TitleText.getText());
-            String  Description = String.valueOf(DespText.getText());
+        else {
+            String Title = String.valueOf(TitleText.getText());
+            String Description = String.valueOf(DespText.getText());
 
 
             String finalStreetName = StreetName;
@@ -463,7 +475,6 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
                     newTask.setCatalog(catalogType);
 
 
-
                     //adding to database
                     DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
                             .taskDao()
@@ -488,11 +499,11 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
 //            todoDao.insert(newTask);
 
 
-
             DialogActivity.this.finish();
         }
     }
-    private void getTask(){
+
+    private void getTask() {
         class GetTask extends AsyncTask<Void, Void, Void> {
 
             @Override
@@ -502,25 +513,28 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
                         .getthetask(mytask.getCreateDate());
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-               init();
+                init();
 //                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                 Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
                 finish();
             }
 
-    }
+        }
 
-        GetTask gt = new  GetTask();
+        GetTask gt = new GetTask();
         gt.execute();
     }
-    void init(){
+
+    void init() {
 
 
     }
+
     private void loadTask(TaskDB mytask) {
         TextView TitleText = findViewById(R.id.title);
         TextView DespText = findViewById(R.id.description);
@@ -538,12 +552,12 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
         RadioButton StudyBtn = findViewById(R.id.StudyButton);
         String catalog = mytask.getCatalog();
 
-        if(catalog.equals("Personal")) PersonalBtn.setChecked(true);
-        if(catalog.equals("Meeting")) MeetingBtn.setChecked(true);
-        if(catalog.equals("Party")) PartyBtn.setChecked(true);
-        if(catalog.equals("Work")) WorkBtn.setChecked(true);
-        if(catalog.equals("Shopping")) ShoppingBtn.setChecked(true);
-        if(catalog.equals("Study")) StudyBtn.setChecked(true);
+        if (catalog.equals("Personal")) PersonalBtn.setChecked(true);
+        if (catalog.equals("Meeting")) MeetingBtn.setChecked(true);
+        if (catalog.equals("Party")) PartyBtn.setChecked(true);
+        if (catalog.equals("Work")) WorkBtn.setChecked(true);
+        if (catalog.equals("Shopping")) ShoppingBtn.setChecked(true);
+        if (catalog.equals("Study")) StudyBtn.setChecked(true);
 
 
         LatLng latLng = new LatLng(mytask.getLatitude(), mytask.getLongitude());
@@ -555,15 +569,16 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
 //        mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()));
 //        TaskcameraPosition = new CameraPosition.Builder().target(new LatLng(mytask.getLatitude(), mytask.getLongitude())).zoom(16).build();
 
-        Log.e("Null?" , String.valueOf(cameraPosition == null));
-        Log.e("Null?!" , String.valueOf(mGoogleMap == null));
+        Log.e("Null?", String.valueOf(cameraPosition == null));
+        Log.e("Null?!", String.valueOf(mGoogleMap == null));
 
         String pickedTime = mytask.getHour() + ":" + mytask.getMinute();
 
-        String date = mytask.getDay()+"/"+(mytask.getMonth())+"/"+mytask.getYear();
+        String date = mytask.getDay() + "/" + (mytask.getMonth()) + "/" + mytask.getYear();
         dateText.setText(date);
         timeText.setText(pickedTime);
     }
+
     private void deleteTask(final TaskDB task) {
         class DeleteTask extends AsyncTask<Void, Void, Void> {
 
@@ -603,8 +618,9 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MessageEvent msg){
+    public void onEvent(MessageEvent msg) {
         Place place = msg.place;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
@@ -615,11 +631,80 @@ public class DialogActivity extends AppCompatActivity implements OnMapReadyCallb
 //        currtlocation = place.getLatLng()\
 //        onDestroy();
     }
-    public String get0(String s){
+
+    public String get0(String s) {
         StringBuffer sb = new StringBuffer();
         sb.append("0").append(s);
         s = sb.toString();
         return s;
+
+    }
+
+    private void updateTask(final TaskDB newTask) {
+        TextView TitleText = findViewById(R.id.title);
+        TextView DespText = findViewById(R.id.description);
+        RadioGroup grp1 = findViewById(R.id.rgcolour);
+        RadioGroup grp2 = findViewById(R.id.belowcolour);
+        RadioButton CheckedButton = findViewById(grp1.getCheckedRadioButtonId() == -1 ? grp2.getCheckedRadioButtonId() : grp1.getCheckedRadioButtonId());
+        String StreetName = "";
+        String catalogType = String.valueOf(CheckedButton.getText());
+        if (currtlocation != null)
+            StreetName = getStreetName(currtlocation);
+        if (TitleText.getText() == null)
+            Toast.makeText(DialogActivity.this, "Please input Title", Toast.LENGTH_LONG).show();
+        else if (DespText.getText() == null)
+            Toast.makeText(DialogActivity.this, "Please input Description", Toast.LENGTH_LONG).show();
+        else if (mCurrLocationMarker == null)
+            Toast.makeText(DialogActivity.this, "Please Select a place", Toast.LENGTH_LONG).show();
+        else if (SelectHour == null)
+            Toast.makeText(DialogActivity.this, "Please Select time", Toast.LENGTH_LONG).show();
+        else if (SelectYear == null)
+            Toast.makeText(DialogActivity.this, "Please Select a date", Toast.LENGTH_LONG).show();
+        else {
+            String Title = String.valueOf(TitleText.getText());
+            String Description = String.valueOf(DespText.getText());
+
+
+            String finalStreetName = StreetName;
+
+            class UpdateTask extends AsyncTask<Void, Void, Void> {
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    newTask.setTitle(Title);
+                    newTask.setDescription(Description);
+                    newTask.setStreetName(finalStreetName);
+                    newTask.setLatitude(currtlocation.latitude);
+                    newTask.setLongitude(currtlocation.longitude);
+                    Date date = new Date(System.currentTimeMillis());
+                    newTask.setNotify(true);
+                    newTask.setHour(SelectHour);
+                    newTask.setMinute(SelectMinute);
+                    newTask.setMonth(SelectMonth);
+                    newTask.setDay(SelectDay);
+                    newTask.setYear(SelectYear);
+                    newTask.setCreateDate(date);
+                    newTask.setIsdone(false);
+
+                    newTask.setCatalog(catalogType);
+                    DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                            .taskDao()
+                            .update(newTask);
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_LONG).show();
+                    EventBus.getDefault().post(new TaskEvent(newTask));
+                    finish();
+                }
+            }
+
+            UpdateTask ut = new UpdateTask();
+            ut.execute();
+        }
 
     }
 }

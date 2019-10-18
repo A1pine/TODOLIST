@@ -1,6 +1,8 @@
 package com.comp2100.todolist;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +27,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
@@ -56,6 +60,8 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -77,7 +83,7 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
     String SelectHour;
     String SelectMinute;
     String SelectTime;
-
+    long longtime;
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -243,10 +249,31 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                 RadioButton CheckedButton = findViewById(grp1.getCheckedRadioButtonId() == -1?grp2.getCheckedRadioButtonId() : grp1.getCheckedRadioButtonId());
                 String catalogType = String.valueOf(CheckedButton.getText());
 
+                createNotificationChannel(v , longtime);
                 Log.e("SaveButton", catalogType);
-                SaveButton.setClickable(false);
             }
         });
+    }
+
+    private static void createNotificationChannel(View v , Long time) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("MyNotification", "MyNotification", NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager manager = v.getContext().getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(v.getContext(), "MyNotification")
+                .setContentTitle(v.findViewById(R.id.TextTitle))
+                .setSmallIcon(R.drawable.ic_one)
+                .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(v.findViewById(R.id.description)))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentText("This is my test")
+                .setWhen(time);
+        NotificationManagerCompat manager = NotificationManagerCompat.from(v.getContext());
+        manager.notify(999, builder.build());
+
     }
     @Override
     public void onPause() {
@@ -498,6 +525,17 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
 
                     newTask.setCatalog(catalogType);
 
+                    String strtime = newTask.getDay() + "/" + newTask.getMonth() + "/" +newTask.getYear() + " " + newTask.getHour() + ":" + newTask.getMinute();
+
+                    SimpleDateFormat Notifyfmt = new SimpleDateFormat("dd/MM/yyyy HH:mm" , Locale.US);
+                    Date Notifydate = null;
+                    try {
+                        Notifydate = Notifyfmt.parse(strtime);
+                        Long Notifytime = Notifydate.getTime();
+                        long time = Notifytime;
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
 
                     //adding to database
@@ -515,6 +553,9 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
                     finish();
 //                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+
+
+
 
                 }
 
@@ -535,4 +576,6 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback,  D
         return s;
 
     }
+
+
 }

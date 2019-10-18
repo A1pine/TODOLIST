@@ -11,10 +11,12 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -45,6 +47,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> implements DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
     static List<TaskDB> tasks;
@@ -98,6 +101,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> im
         TextView taskdate;
         TextView LeftDays;
         TextView LeftorPast;
+        CheckBox isdownBox;
         RelativeLayout mycolor;
 
         public TaskViewHolder(View itemView) {
@@ -109,6 +113,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> im
             mycolor = itemView.findViewById(R.id.LeftSideColor);
             LeftDays = itemView.findViewById(R.id.DayleftText);
             LeftorPast = itemView.findViewById(R.id.isGone);
+            isdownBox = itemView.findViewById(R.id.isDownBox);
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -241,12 +246,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> im
             taskViewHolder.mycolor.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF9800")));
         if(catalog.equals("Study"))
             taskViewHolder.mycolor.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#673AB7")));
-        DateFormat Notifyfmt = new SimpleDateFormat("dd/MM/YYYY HH:mm");
-        DateFormat Leftfmt = new SimpleDateFormat("dd/MM/YYYY");
+        if(nowTask.isIsdone()){
+            taskViewHolder.mycolor.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#616161")));
+        }
+        SimpleDateFormat Notifyfmt = new SimpleDateFormat("dd/MM/yyyy HH:mm" , Locale.US);
+        SimpleDateFormat Leftfmt = new SimpleDateFormat("dd/MM/yyyy" , Locale.US);
         String strtime = nowTask.getDay() + "/" + nowTask.getMonth() + "/" +nowTask.getYear() + " " + nowTask.getHour() + ":" + nowTask.getMinute();
         try {
             Date Lefdate = Leftfmt.parse(strtime);
-            Date now = new Date();
+            Date now = new Date(System.currentTimeMillis());
             Calendar cal1 = Calendar.getInstance();
             Calendar cal2 = Calendar.getInstance();
             cal1.setTime(now);
@@ -257,6 +265,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> im
             cal1.set(Calendar.SECOND, 0);
             cal1.set(Calendar.MILLISECOND, 0);
             now = cal1.getTime();
+            Log.e("LastTime", now.toString());
+            Log.e("LastTime" , strtime);
             int days = (int) ((Lefdate.getTime() - now.getTime()) / (1000*3600*24));
             if(days >= 0){
                 taskViewHolder.LeftDays.setText(String.valueOf(days));
@@ -299,7 +309,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> im
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText("Much longer text that cannot fit one line..."))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentText("This is my test");
+                .setContentText("This is my test")
+                .setWhen(time);
         NotificationManagerCompat manager = NotificationManagerCompat.from(v.getContext());
         manager.notify(999, builder.build());
 
