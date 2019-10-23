@@ -1,5 +1,6 @@
 # GP19S2
-
+###ps. to run our code and build the project, you have to install lombok with intellij or Android Studio(Not sure if eclipse will work)
+###This is because we used this plugin to automically generate get and set methods for our TaskDB(RoomDatabase) Class.
 TEAM STRUCTURE AND ROLES
 
 Project Team Member:
@@ -192,19 +193,19 @@ Agenda details:
 
 Git Commit History
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/1,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/1.png)
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/2,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/2.png)
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/3,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/3.png)
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/4,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/4.png)
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/5,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/5.png)
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/6,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/6.png)
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/7,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/7.png)
 
 Testing Summary
 
@@ -214,13 +215,13 @@ the version issues. So, we adopted Junit to test, update the task, Edit the task
 and delete the task then solve those problems, so that rh program development
 could run normally.
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/8,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/8.png)
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/9,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/9.png)
 
-![C:\\Users\\Lesli\\AppData\\Local\\Temp\\WeChat Files\\dc191265a7b8ecbdf51bdeb99cc8365.png](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/10,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/10.png)
 
-![](media/6e43a96049894147213625679e94a105.png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/11.png)
 
 App summary & Screenshots
 
@@ -228,13 +229,13 @@ In the app, we have some main function.
 
 1.  Calendar
 
-    ![C:\\Users\\scott\\AppData\\Local\\Temp\\1571395412(1).png](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/11,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/12.png)
 
 There is a Calendar at the top bar. The date of the calendar is automatically
 updated every day as time changes. For example, if today is 18/10 Friday, then
 the date can be update to 18/10 Friday.
 
-![C:\\Users\\scott\\AppData\\Local\\Temp\\1571396161(1).png](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/12,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/13.png)
 
 1.  “Home Page button”: after click the button, then can be come back to home
     page.
@@ -244,7 +245,9 @@ the date can be update to 18/10 Friday.
 
 3.  “Task page button”: Click the button then go to task page.
 
-![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/13,png)
+
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/14.png)
+
 
 1.  Edit text: Enter title of task.
 
@@ -267,11 +270,10 @@ the date can be update to 18/10 Friday.
 “Task Card”: Show basic information of task, and after Click the “star”, then it
 can be light.
 
-![C:\\Users\\scott\\AppData\\Local\\Temp\\WeChat Files\\d5d35d2f5f74f7cd2c6ac3eeceee2eb.png](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/14,png)
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/15.png)
 
-![C:\\Users\\scott\\AppData\\Local\\Temp\\WeChat Files\\fef6fe3246ab902973e0003b25d16a3.png](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/15,png)
-
-Reference
+![](https://gitlab.cecs.anu.edu.au/u6792826/readmeimage/raw/master/16.png)
+#Reference
 
 1.  Name: 'com.ashokvarma.android:bottom-navigation-bar:2.1.0'
 
